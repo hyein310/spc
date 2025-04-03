@@ -6,81 +6,179 @@
     <title>넷플릭스 대한민국</title>
     <style>
       * {
-        background: black;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
       }
-      header {
-        padding: 4%;
-        width: auto;
-        height: 20%;
-      }
-      .logo,
-      .logo.img {
-        width: 10em;
-        height: 4em;
-        display: flex;
-        flex: 1;
-        flex-direction: column;
-        justify-content: center;
-      }
-      .dropdown-login {
-        padding-right: 20px;
-        float: right;
-        display: flex;
-        flex: 1;
-        flex-direction: row;
-        justify-content: center;
+      body {
+        background-color: black;
+        color: white;
         align-items: center;
       }
-      .languages {
-        margin: 10px;
+
+      .img-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 70vh;
+        background-image: url(netflix_bg.png);
+        background-size: cover;
+        background-position: center;
+        filter: brightness(30%);
+        opacity: 0.8;
+        z-index: -1;
       }
+
+      .container {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+      }
+
+      header {
+        display: flex;
+        height: 10%;
+        padding: 0 5%;
+        align-items: center;
+        justify-content: space-between;
+        position: relative;
+        z-index: 1;
+      }
+
+      .logo img {
+        width: 10em;
+        height: 4em;
+      }
+
+      .dropdown-login {
+        display: flex;
+        align-items: center;
+      }
+
+      .languages {
+        margin-right: 20px;
+      }
+
+      #lang {
+        background-color: black;
+        border: 1px solid white;
+        color: white;
+        padding: 10px 20px;
+      }
+
       .login-btn,
       .submit-btn {
         border: none;
-        border-radius: 10%;
+        border-radius: 7%;
         background-color: red;
+        color: white;
+        padding: 10px 20px;
+        font-size: 1rem;
+        cursor: pointer;
       }
 
-      main {
-        padding: 50px;
-      }
-      .info {
+      .top-section {
+        height: 60vh;
+        display: flex;
+        margin: 30px;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
         text-align: center;
-        text-decoration: white;
+        position: relative;
+        z-index: 1;
+      }
+
+      .bottom-section {
+        height: 30vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        background-color: black;
+      }
+
+      .info {
+        margin-left: 20%;
+        margin-right: 20%;
+      }
+
+      #email-form {
+        padding: 10px;
+        margin: 5%;
+      }
+
+      .input-email {
+        padding: 10px;
+        width: 70%;
+        max-width: 300px;
+        margin: 15px;
+        margin-right: 10px;
+        background-color: black;
+        border: 1px solid white;
+        color: white;
       }
     </style>
   </head>
   <body>
-    <header>
-      <div class="logo">
-        <img class="logo img" src="netflix.png" alt="넷플릭스 로고" />
-      </div>
-      <div class="dropdown-login">
-        <div class="languages">
-          <select name="languages" id="lang">
-            <option value="Ko">한국어</option>
-            <option value="Eng">영어</option>
-          </select>
+    <div class="container">
+      <div class="img-bg"></div>
+
+      <header>
+        <div class="logo">
+          <img class="logo img" src="netflix_logo.png" alt="넷플릭스 로고" />
         </div>
-        <button class="login-btn">로그인</button>
-      </div>
-    </header>
-    <main>
-      <article>
+        <div class="dropdown-login">
+          <div class="languages">
+            <select name="languages" id="lang">
+              <option value="Ko">한국어</option>
+              <option value="Eng">영어</option>
+            </select>
+          </div>
+          <button class="login-btn">로그인</button>
+        </div>
+      </header>
+
+      <div class="top-section">
         <div class="info">
           <h1>영화, 시리즈등을 무제한으로</h1>
-          <p>5,500원으로 시작하세요. 멤버십은 언제든지 해지 가능합니다.</p>
-          <form action="./Netflix.html">
+          <br />
+          <h2>5,500원으로 시작하세요. 멤버십은 언제든지 해지 가능합니다.</h2>
+          <br />
+          <form action="./Netflix.html" id="email-form">
             <h3>
               시청할 준비가 되셨나요? 멤버십을 등록하거나 재시작하려면 이메일
               주소를 입력하세요.
             </h3>
+            <br />
             <input type="email" class="input-email" placeholder="이메일 주소" />
             <button type="submit" class="submit-btn">시작하기 ></button>
           </form>
         </div>
-      </article>
-    </main>
-    <footer>넷플릭스 대한민국</footer>
+      </div>
+
+      <div class="bottom section">
+        <div class="member-price">
+          <h3>5,500원이면 만날 수 있는 넷플릭스.</h3>
+          <p>가장 경제적인 광고형 멤버십을 이용해 보세요.</p>
+          <button class="price-detail">자세히 알아보기</button>
+        </div>
+        <div>
+          <div>
+            <p>지금 뜨는 콘텐츠</p>
+          </div>
+          <div class="hot-contents">
+            <div class="content-img"><div class="content-rank">1</div></div>
+            <div class="content-img"><div class="content-rank">2</div></div>
+            <div class="content-img"><div class="content-rank">3</div></div>
+            <div class="content-img"><div class="content-rank">4</div></div>
+            <div class="content-img"><div class="content-rank">5</div></div>
+            <div class="content-img"><div class="content-rank">6</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
