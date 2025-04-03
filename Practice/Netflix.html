@@ -5,26 +5,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>넷플릭스 대한민국</title>
     <style>
-      header {
-        display: inline-block;
-        padding: 20px;
+      * {
+        background: black;
       }
-      #logo-image {
-        width: 15vw;
-        height: 5vw;
-        background-image: url(netflix.png);
-        background-size: 100%;
-        float: left;
+      header {
+        padding: 4%;
+        width: auto;
+        height: 20%;
+      }
+      .logo,
+      .logo.img {
+        width: 10em;
+        height: 4em;
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        justify-content: center;
       }
       .dropdown-login {
-        padding: 5px;
+        padding-right: 20px;
         float: right;
+        display: flex;
+        flex: 1;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+      }
+      .languages {
+        margin: 10px;
+      }
+      .login-btn,
+      .submit-btn {
+        border: none;
+        border-radius: 10%;
+        background-color: red;
+      }
+
+      main {
+        padding: 50px;
+      }
+      .info {
+        text-align: center;
+        text-decoration: white;
       }
     </style>
   </head>
   <body>
     <header>
-      <div id="logo-image"><img src="netflix.png" alt="넷플릭스 로고" /></div>
+      <div class="logo">
+        <img class="logo img" src="netflix.png" alt="넷플릭스 로고" />
+      </div>
       <div class="dropdown-login">
         <div class="languages">
           <select name="languages" id="lang">
@@ -32,12 +62,12 @@
             <option value="Eng">영어</option>
           </select>
         </div>
-        <button id="login">로그인</button>
+        <button class="login-btn">로그인</button>
       </div>
     </header>
     <main>
       <article>
-        <div>
+        <div class="info">
           <h1>영화, 시리즈등을 무제한으로</h1>
           <p>5,500원으로 시작하세요. 멤버십은 언제든지 해지 가능합니다.</p>
           <form action="./Netflix.html">
@@ -45,8 +75,8 @@
               시청할 준비가 되셨나요? 멤버십을 등록하거나 재시작하려면 이메일
               주소를 입력하세요.
             </h3>
-            <input type="email" placeholder="이메일 주소" />
-            <button type="submit">시작하기 ></button>
+            <input type="email" class="input-email" placeholder="이메일 주소" />
+            <button type="submit" class="submit-btn">시작하기 ></button>
           </form>
         </div>
       </article>
