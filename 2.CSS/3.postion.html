@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <style>
+      div {
+        width: 100px;
+        height: 100px;
+        background-color: darkgray;
+        margin: 5px;
+        /* display: inline-block; */
+      }
+      .rel {
+        background-color: bisque;
+        position: relative;
+        /* position: absolute; */
+        top: 50px;
+        left: 50px;
+      }
+      .container {
+        width: 300px;
+        height: 200px;
+        background-image: url(dog1.jpg);
+        background-size: 100%;
+      }
+      p {
+        position: relative;
+        top: 50px;
+        left: 50px;
+        color: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <div>1</div>
+    <div class="rel">2</div>
+    <div>3</div>
+    <div class="container">
+      <p class="inline">만세 강아지</p>
+    </div>
+  </body>
+</html>

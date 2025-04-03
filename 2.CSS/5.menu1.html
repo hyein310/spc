@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <style>
+      .container .item {
+        /* 만약 .container > .item 이라면 직속 자녀만 선택 되고 
+          .container .item 형식으로 표현했다면 모든 자녀 선택*/
+        float: left;
+        width: 100px;
+        text-align: center;
+        border-right: 2px solid darkgray;
+      }
+
+      .container .last {
+        float: right;
+        border-right: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="item">menu 1</div>
+      <div class="item">menu 2</div>
+      <div class="item">menu 3</div>
+      <div class="item last">login</div>
+    </div>
+  </body>
+</html>
