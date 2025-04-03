@@ -120,6 +120,47 @@
         border: 1px solid white;
         color: white;
       }
+
+      .price {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: row;
+        width: 80%;
+        height: 15px;
+        padding: 0 2rem;
+        margin: 20px;
+        gap: 20px;
+      }
+
+      .price-info:hover {
+        background-color: darkmagenta;
+      }
+
+      #popcorn {
+        flex: 1;
+        max-width: 100px;
+        height: auto;
+      }
+
+      .price-info {
+        flex: 4;
+        width: 100%;
+        padding: 20px;
+        background-color: darkblue;
+        color: white;
+        border-radius: 10px;
+      }
+
+      .price-detail {
+        border: none;
+        background-color: darkgray;
+        color: white;
+        padding: 10px 20px;
+        margin-top: 10px;
+        cursor: pointer;
+        border-radius: 5px;
+      }
     </style>
   </head>
   <body>
@@ -160,12 +201,17 @@
       </div>
 
       <div class="bottom section">
-        <div class="member-price">
-          <h3>5,500원이면 만날 수 있는 넷플릭스.</h3>
-          <p>가장 경제적인 광고형 멤버십을 이용해 보세요.</p>
-          <button class="price-detail">자세히 알아보기</button>
+        <div class="price">
+          <img src="popcorn.png" id="popcorn" alt="팝콘" />
+          <div class="price-info">
+            <h3>5,500원이면 만날 수 있는 넷플릭스.</h3>
+            <p>가장 경제적인 광고형 멤버십을 이용해 보세요.</p>
+            <button class="price-detail">자세히 알아보기</button>
+          </div>
         </div>
-        <div>
+
+        <!-- 위에 까지만 완료 -->
+        <!-- <div>
           <div>
             <p>지금 뜨는 콘텐츠</p>
           </div>
@@ -177,7 +223,7 @@
             <div class="content-img"><div class="content-rank">5</div></div>
             <div class="content-img"><div class="content-rank">6</div></div>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </body>
