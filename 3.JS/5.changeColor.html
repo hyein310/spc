@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button onclick="changeColor()">배경색상변경</button>
+    <script>
+      var colors = ["red", "darkblue", "darkgreen"];
+      var currentIndex = 0;
+
+      function changeColor() {
+        currentIndex++;
+        var cnt = currentIndex++ % 3;
+
+        if (cnt == 0) {
+          document.body.style.backgroundColor = colors[0];
+        } else if (cnt == 1) {
+          document.body.style.backgroundColor = colors[1];
+        } else if (cnt == 2) {
+          document.body.style.backgroundColor = colors[2];
+        }
+      }
+
+      // 1. 버튼을 누를 떄마다 색상이 바뀌게
+      // 2. 다시 순환되게 만들기
+      // 3. 리스트 말고, 랜던 색상으로 바뀌게 하기 (힌트: 숫자코드활용 #RRGGBB)
+    </script>
+  </body>
+</html>
