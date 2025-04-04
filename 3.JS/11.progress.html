@@ -25,7 +25,7 @@
       min="1"
     />
     <button id="startBtn" onclick="startProgress()">시작</button>
-    <button id="resetBtn">리셋</button>
+    <button id="resetBtn" onclick="resetProgress()">리셋</button>
 
     <div id="progressBar">
       <div id="progress"></div>
@@ -42,7 +42,7 @@
 
       function startProgress() {
         // console.log(timeInput.value); // 글자임 숫자로 변환 필요
-        duration = parseInt(timeInput.value);
+        duration = parseInt(timeInput.value); // 입력된 시간간
 
         let timePassed = 0; // 경과된 시간
 
@@ -56,16 +56,24 @@
           progressBar.style.width = `${progress}%`; // 진행률 바(게이지) 업데이트
 
           // 끝까지 완료했으면, 이 타이머를 삭제
-          if (timePassed >= duration) {
+          if (timePassed > duration) {
             clearInterval(interval);
             console.log("타이머 삭제 중.. ", interval);
+            progressBar.style.width = "0%";
           }
         }, 1000);
       }
 
       // 미션2. Reset 버튼 구현하기 (숙제)
       // 2-1. Reset 누르면 타이머 멈추기
-      // 2-2. Rest 눌렀을 떄 타이머도 멈추고, 추가적으로 바 게이지 초기화화
+      // 2-2. Rest 눌렀을 떄 타이머도 멈추고, 추가적으로 바 게이지 초기화
+      function resetProgress() {
+        // input값 초기화
+        timeInput.value = 0;
+        // 타이머 멈추기
+        clearInterval(interval);
+        progressBar.style.width = "0%";
+      }
     </script>
   </body>
 </html>
