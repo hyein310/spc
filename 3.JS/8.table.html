@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      table {
+        /* 간격 없애기 */
+        border-collapse: collapse;
+      }
+      td {
+        border: 1px solid black;
+        padding: 10px;
+        /* background-color: aqua; */
+      }
+    </style>
+  </head>
+  <body>
+    <table id="table">
+      <tr>
+        <td>셀1</td>
+        <td>셀2</td>
+        <td>셀3</td>
+      </tr>
+      <tr>
+        <td>셀4</td>
+        <td>셀5</td>
+        <td>셀6</td>
+      </tr>
+      <tr>
+        <td>셀7</td>
+        <td>셀8</td>
+        <td>셀9</td>
+      </tr>
+    </table>
+    <br />
+    <button onclick="wholeColor()">전체색상변경</button>
+    <button onclick="oddColor()">홀수색상변경</button>
+    <button onclick="evenColor()">짝수색상변경</button>
+
+    <script>
+      // 미션1. 전체 색상 변경 기능구현(함수)
+      function wholeColor() {
+        let tableBg = document.getElementsByTagName("td");
+        for (let i = 0; i < tableBg.length; i++) {
+          tableBg[i].style.backgroundColor = "aqua";
+        }
+      }
+
+      // 미션2. 홀수 색상 변경 기능구현(함수)
+      function oddColor() {
+        let tableBg = document.getElementsByTagName("td");
+        for (let i = 0; i <= tableBg.length; i++) {
+          if (i % 2 == 0) {
+            tableBg[i].style.backgroundColor = "red";
+          }
+        }
+      }
+
+      // 미션3. 짝수 색상 변경 기능구현(함수)
+      function evenColor() {
+        let tableBg = document.getElementsByTagName("td");
+        for (let i = 0; i <= 9; i++) {
+          if (i % 2 == 1) {
+            tableBg[i].style.backgroundColor = "blue";
+          }
+        }
+      }
+
+      //   예시 2) forEach
+      // forEach는 Array를 Iterate할 수 있음 (Iterable)
+      // Array.from(tableBg).forEach()...
+
+      // 예시 3) for .. of
+      // for (var t of tableBg) {
+      //     tableBg.style.backgroundColor="aqua";
+      // }
+    </script>
+  </body>
+</html>

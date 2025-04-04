@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button onclick="showHide()">토글(show/hide) 아래 영역</button>
+    <div id="showHide">이것은 숨겨질 div입니다..</div>
+    <script src="9.showHide.js"></script>
+    <!-- script 순서에 유의, head가 먼저 실행되기 때문에 
+     body에서 사용되는 요소가 실행됐을 경우 실행이 안됨 
+     그럴 경우 
+     <script src="9.showHide.js" defer></script>
+     defer를 넣으면 해결 가능
+     -->
+  </body>
+</html>

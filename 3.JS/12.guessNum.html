@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>숫자 맞추기 게임</h1>
+    <h2>1~100까지의 숫자 맞추기..</h2>
+    <input type="number" id="guessNum" placeholder="숫자를 입력하세요.." />
+    <button id="guessBtn" onclick="guess()">Guess</button>
+    <p id="result"></p>
+
+    <script>
+      // 미션1. 랜덤 숫자를 만들고 기억해둔다.
+      // 미션2. 사용자가 입력한 값을 보고,
+      // 내가 생각한 숫자보다 작으면 숫자가 작아요, 크면 너무 커요, 같으면 정답
+      // 미션3. 풀이를 하면서.. 어떻게 숫자를 찍어야 가장 좋은 것인가?
+      // 몇번만에 맞추는 것이 이론적으로 가장 좋은 것인가?
+      let resultVaule = parseInt(Math.random() * 100 + 1);
+      console.log(resultVaule);
+
+      function guess() {
+        let guessNum = document.getElementById("guessNum").value;
+        let result = document.getElementById("result");
+
+        if (resultVaule == guessNum) {
+          result.innerText = `${resultVaule} 정답입니다.`;
+        }
+        if (resultVaule < guessNum) {
+          result.innerText = "숫자가 큽니다.";
+        }
+        if (resultVaule > guessNum) {
+          result.innerText = "숫자가 작습니다.";
+        }
+      }
+    </script>
+  </body>
+</html>
