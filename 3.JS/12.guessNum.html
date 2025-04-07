@@ -11,6 +11,7 @@
     <input type="number" id="guessNum" placeholder="숫자를 입력하세요.." />
     <button id="guessBtn" onclick="guess()">Guess</button>
     <p id="result"></p>
+    <ol id="history"></ol>
 
     <script>
       // 미션1. 랜덤 숫자를 만들고 기억해둔다.
@@ -18,22 +19,37 @@
       // 내가 생각한 숫자보다 작으면 숫자가 작아요, 크면 너무 커요, 같으면 정답
       // 미션3. 풀이를 하면서.. 어떻게 숫자를 찍어야 가장 좋은 것인가?
       // 몇번만에 맞추는 것이 이론적으로 가장 좋은 것인가?
+      // binary search 에 대한 내용.. 수학적 계산식 log(100) = 6.64 = 7qjsdmf Wlrdjdi gka
+      // 미션4. 나의 찍은 흔적을 계속 화면에 두고 싶음음
+      // 미션5. 각각의 입력값 뒤에 그 결과도 함께 적기
+
+      // let : 생성 후 변경되는 변수
+      // const : 생성 후 변경되지 않는 변수 => 상수
       let resultVaule = parseInt(Math.random() * 100 + 1);
       console.log(resultVaule);
 
       function guess() {
+        // guessNum은 굳이 바뀌지 않는 것이기 때문에 함수 밖에 위치하는 것이 성능 향상에 도움
         let guessNum = document.getElementById("guessNum").value;
         let result = document.getElementById("result");
+        const history = document.getElementById("history");
+        let resultText = "";
 
         if (resultVaule == guessNum) {
-          result.innerText = `${resultVaule} 정답입니다.`;
+          resultText = "정답! ";
+          result.innerHTML = `<B style="color:red">${resultVaule}</B> 정답입니다.`;
         }
         if (resultVaule < guessNum) {
-          result.innerText = "숫자가 큽니다.";
+          resultText = "숫자가 큽니다.";
         }
         if (resultVaule > guessNum) {
-          result.innerText = "숫자가 작습니다.";
+          resultText = "숫자가 작습니다.";
         }
+        result.innerHTML = "<B>" + resultText + "</B>";
+
+        const newResult = document.createElement("li");
+        newResult.innerText = "user Input : " + guessNum + ", " + resultText;
+        history.appendChild(newResult);
       }
     </script>
   </body>
