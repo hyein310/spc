@@ -43,9 +43,9 @@
     </style>
   </head>
   <body>
-    <div id="dragItem1" draggable="true">drag me!</div>
-    <div id="dragItem2" draggable="true">drag me!</div>
-    <div id="dragItem3" draggable="true">drag me!</div>
+    <div id="dragItem1" class="dragItem" draggable="true">drag me!</div>
+    <div id="dragItem2" class="dragItem" draggable="true">drag me!</div>
+    <div id="dragItem3" class="dragItem" draggable="true">drag me!</div>
     <div id="dropZone">drop here!</div>
 
     <script>
@@ -54,28 +54,31 @@
       const dragItem2 = document.getElementById("dragItem2");
       const dragItem3 = document.getElementById("dragItem3");
       const dropZone = document.getElementById("dropZone");
+      let dragId;
 
       dragItem1.addEventListener("dragstart", function () {
         console.log("drag start!");
+        dragId = dragItem1;
       });
 
       dragItem2.addEventListener("dragstart", function () {
         console.log("drag start!");
+        dragId = dragItem2;
       });
 
       dragItem3.addEventListener("dragstart", function () {
         console.log("drag start!");
+        dragId = dragItem3;
       });
 
       dropZone.addEventListener("dragover", function (e) {
         e.preventDefault();
-        console.log("누가 위에 있음");
       });
 
       dropZone.addEventListener("drop", function (e) {
         e.preventDefault();
-        console.log("드롭 발생", e);
-        dropZone.appendChild(dragItem1);
+        console.log("드롭 발생", dragId);
+        dropZone.appendChild(dragId);
       });
     </script>
   </body>
