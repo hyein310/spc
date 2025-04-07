@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <!-- 이벤트 방법이 주로 사용됨됨 -->
+    <button id="myBtn">클릭하세용</button>
+    <script>
+      document.getElementById("myBtn").addEventListener("click", function () {
+        console.log("버튼 클릭"); // 눌렀다가 뗐을 때 작동
+      });
+      document
+        .getElementById("myBtn")
+        .addEventListener("mousedown", function (e) {
+          //   console.log("버튼 눌림 이벤트 : ", e);
+          //   if (e.button === 0) {
+          //     console.log("왼쪽 클릭");
+          //   } else if (e.button === 1) {
+          //     console.log("가운데/휠 클릭");
+          //   } else if (e.button === 2) {
+          //     console.log("오른쪽 클릭");
+          //   }
+
+          switch (e.button) {
+            case 0: // 좌클릭
+              console.log("왼쪽 버튼 클릭");
+              break;
+            case 1: // 미들클릭
+              console.log("중간 버튼 클릭");
+              break;
+            case 2: // 우클릭
+              console.log("오른쪽 버튼 클릭");
+              break;
+
+            default: // 여기는 그 외 나머지 실행됨
+              console.log("그외 나머지 버튼");
+          }
+        });
+      document.getElementById("myBtn").addEventListener("mouseup", function () {
+        console.log("버튼 눌린 거 뗌");
+      });
+    </script>
+
+    <!-- 인라인 방법.. 잘 사용되지 않음 -->
+    <!-- <button onclick="myClick()">인라인 클릭</button>
+    <script>
+      function myClick() {
+        console.log("버튼 눌림용");
+      }
+    </script> -->
+  </body>
+</html>

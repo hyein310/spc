@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #dragItem1 {
+        width: 100px;
+        height: 100px;
+        background-color: lightblue;
+        margin-bottom: 20px;
+        text-align: center;
+        cursor: pointer;
+      }
+
+      #dragItem2 {
+        width: 100px;
+        height: 100px;
+        background-color: lightpink;
+        margin-bottom: 20px;
+        text-align: center;
+        cursor: pointer;
+      }
+
+      #dragItem3 {
+        width: 100px;
+        height: 100px;
+        background-color: lightgreen;
+        margin-bottom: 20px;
+        text-align: center;
+        cursor: pointer;
+      }
+
+      #dropZone {
+        display: flex;
+        width: 200px;
+        height: 200px;
+        border: 2px dashed black;
+        background-color: lightgrey;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="dragItem1" draggable="true">drag me!</div>
+    <div id="dragItem2" draggable="true">drag me!</div>
+    <div id="dragItem3" draggable="true">drag me!</div>
+    <div id="dropZone">drop here!</div>
+
+    <script>
+      // beautiful dnd 라이브러리 사용하는 것이 더 나음
+      const dragItem1 = document.getElementById("dragItem1");
+      const dragItem2 = document.getElementById("dragItem2");
+      const dragItem3 = document.getElementById("dragItem3");
+      const dropZone = document.getElementById("dropZone");
+
+      dragItem1.addEventListener("dragstart", function () {
+        console.log("drag start!");
+      });
+
+      dragItem2.addEventListener("dragstart", function () {
+        console.log("drag start!");
+      });
+
+      dragItem3.addEventListener("dragstart", function () {
+        console.log("drag start!");
+      });
+
+      dropZone.addEventListener("dragover", function (e) {
+        e.preventDefault();
+        console.log("누가 위에 있음");
+      });
+
+      dropZone.addEventListener("drop", function (e) {
+        e.preventDefault();
+        console.log("드롭 발생", e);
+        dropZone.appendChild(dragItem1);
+      });
+    </script>
+  </body>
+</html>

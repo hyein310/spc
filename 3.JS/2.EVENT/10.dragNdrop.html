@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #dragItem {
+        display: flex;
+        width: 100px;
+        height: 100px;
+        background-color: lightblue;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+      #dropZone {
+        width: 200px;
+        height: 200px;
+        border: 2px dashed black;
+        background-color: lightgrey;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="dragItem" draggable="true">drag me!</div>
+    <div id="dropZone">drop here!</div>
+
+    <script>
+      // beautiful dnd 라이브러리 사용하는 것이 더 나음
+      const dragItem = document.getElementById("dragItem");
+      const dropZone = document.getElementById("dropZone");
+
+      dragItem.addEventListener("dragstart", function () {
+        console.log("drag start!");
+      });
+
+      dropZone.addEventListener("dragover", function (e) {
+        e.preventDefault();
+        console.log("누가 위에 있음");
+      });
+
+      dropZone.addEventListener("drop", function (e) {
+        e.preventDefault();
+        console.log("드롭 발생");
+        dropZone.appendChild(dragItem);
+      });
+    </script>
+  </body>
+</html>

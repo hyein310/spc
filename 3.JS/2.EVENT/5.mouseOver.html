@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #myElement {
+        width: 100px;
+        height: 100px;
+        background-color: lightblue;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="myElement"></div>
+    <script>
+      const myElement = document.getElementById("myElement");
+      document
+        .getElementById("myElement")
+        .addEventListener("mouseover", function (e) {
+          console.log("마우스 올라감!");
+          // 색상을 바꾸고 싶으면?
+          this.style.backgroundColor = "lightgrey"; // 화살표 함수에서는 본인 자체를 this로 받기 때문에 this 불가능
+        });
+
+      document
+        .getElementById("myElement")
+        .addEventListener("mouseout", function (e) {
+          console.log("마우스 내려감!");
+          myElement.style.backgroundColor = "lightpink";
+        });
+    </script>
+  </body>
+</html>

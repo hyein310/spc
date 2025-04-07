@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .container {
+        padding: 20px;
+        background-color: lightgray;
+      }
+      .inner {
+        padding: 10px;
+        background-color: lightgreen;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="inner">클릭하시오.</div>
+    </div>
+
+    <script>
+      const container = document.querySelector(".container");
+      const inner = document.querySelector(".inner");
+      // querySelector : CSS 셀렉터 문법으로 요소를 가져옴
+      // querySelectorAll : 여러개 가져올 때
+      container.addEventListener("click", function (e) {
+        console.log("컨테이너 클릭됨");
+      });
+
+      inner.addEventListener("click", function (e) {
+        console.log("안쪽 클릭됨");
+        e.stopPropagation(); // 부모에게까지 전파하지 마시오오
+      });
+    </script>
+  </body>
+</html>

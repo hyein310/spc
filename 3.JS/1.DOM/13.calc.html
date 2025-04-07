@@ -29,60 +29,117 @@
   <body>
     <div class="calculator">
       <input type="text" id="inputNum" value="" />
-      <button onclick="clickNum(this.value)" id="btnVaule" value="+">+</button>
-      <button onclick="clickNum(this.value)" id="btnVaule" value="-">-</button>
-      <button onclick="clickNum(this.value)" id="btnVaule" value="*">*</button>
-      <button onclick="clickNum(this.value)" id="btnVaule" value="/">/</button>
+      <button onclick="clickSimbol(this.value)" class="opBtn" value="+">
+        +
+      </button>
+      <button onclick="clickSimbol(this.value)" class="opBtn" value="-">
+        -
+      </button>
+      <button onclick="clickSimbol(this.value)" class="opBtn" value="*">
+        *
+      </button>
+      <button onclick="clickSimbol(this.value)" class="opBtn" value="/">
+        /
+      </button>
 
-      <button onclick="clickNum(this.value)" id="btnVaule" value="7">7</button>
-      <button onclick="clickNum(this.value)" id="btnVaule" value="8">8</button>
-      <button onclick="clickNum(this.value)" id="btnVaule" value="9">9</button>
-      <button onclick="clickNum(this.value)" id="btnVaule" value="=">=</button>
+      <button onclick="clickNum(this.value)" class="numBtn" value="7">7</button>
+      <button onclick="clickNum(this.value)" class="numBtn" value="8">8</button>
+      <button onclick="clickNum(this.value)" class="numBtn" value="9">9</button>
+      <button onclick="clickSimbol(this.value)" class="opBtn" value="=">
+        =
+      </button>
 
-      <button onclick="clickNum(this.value)" id="btnVaule" value="4">4</button>
-      <button onclick="clickNum(this.value)" id="btnVaule" value="5">5</button>
-      <button onclick="clickNum(this.value)" id="btnVaule" value="6">6</button>
-      <button onclick="clickNum(this.value)" id="btnVaule" value="C">C</button>
+      <button onclick="clickNum(this.value)" class="numBtn" value="4">4</button>
+      <button onclick="clickNum(this.value)" class="numBtn" value="5">5</button>
+      <button onclick="clickNum(this.value)" class="numBtn" value="6">6</button>
+      <button onclick="clickSimbol(this.value)" class="opBtn" value="C">
+        C
+      </button>
 
-      <button onclick="clickNum(this.value)" id="btnVaule" value="1">1</button>
-      <button onclick="clickNum(this.value)" id="btnVaule" value="2">2</button>
-      <button onclick="clickNum(this.value)" id="btnVaule" value="3">3</button>
-      <button onclick="clickNum(this.value)" id="btnVaule" value="0">0</button>
+      <button onclick="clickNum(this.value)" class="numBtn" value="1">1</button>
+      <button onclick="clickNum(this.value)" class="numBtn" value="2">2</button>
+      <button onclick="clickNum(this.value)" class="numBtn" value="3">3</button>
+      <button onclick="clickNum(this.value)" class="numBtn" value="0">0</button>
     </div>
 
     <script>
-      function clickNum(inputValue) {
+      let preValue = "";
+      let curValue = "";
+      let operator = "";
+      const inputValue = document.getElementById("inputNum");
+
+      function clickNum(inputNum) {
         // 미션1. 숫자를 클릭해서 위에 입력창에 표시한다.
         // 심볼은 하나만 입력되어야함. (나의 이전 숫자를 보고, 이전에 숫자가 있을 때만 심볼)
         // 미션2. 연산을 실제로 해야함 (= 클릭하면 그 연산 수행)
         // 미션3. 다양한 오류 처리
-        const inputNum = document.getElementById("inputNum");
-        const btnVaule = document.getElementById("btnVaule");
-        let preValue = ""; // 저장
-        let result;
+        if (operator == "") {
+          preValue = preValue.concat(inputNum);
+          inputValue.value = preValue;
+        } else {
+          curValue = curValue.concat(inputNum);
+          inputValue.value = curValue;
+        }
+        console.log("앞 숫자 : " + preValue + ", 뒤 숫자 : " + curValue);
+      }
 
-        console.log("입력 값 : ", inputValue);
+      function clickSimbol(inputSimbol) {
+        console.log("클릭 심볼 : ", inputSimbol);
+        console.log("저장된 값 : ", preValue);
 
-        switch (inputValue) {
+        switch (inputSimbol) {
           case "+":
-            preValue = inputNum.value;
-            console.log("값 저장 : ", preValue);
-
-            inputNum.value = "";
-            inputNum.value.textContent = "";
-
-            console.log("값 상태 : ", inputNum.value);
-
-            inputNum.value = inputNum.value.concat(inputValue);
-
-            if (inputValue == "=") {
-              result = inputNum.value + inputValue;
-              console.log(result);
-              break;
+          case "-":
+          case "*":
+          case "/":
+            if (preValue == "") {
+              alert("심볼 먼저 입력하면 안됩니다.");
+              return;
             }
+            if (operator !== "") {
+              alert("심볼 중복입력은 안됩니다.");
+              return;
+            }
+            operator = inputSimbol;
+            break;
 
-          default:
-            inputNum.value = inputNum.value.concat(inputValue);
+          case "=":
+            let result = 0;
+            if (preValue !== "" && curValue !== "" && operator !== "") {
+              const num1 = Number(preValue);
+              const num2 = Number(curValue);
+              switch (operator) {
+                case "+":
+                  result = num1 + num2;
+                  break;
+                case "-":
+                  result = num1 + num2;
+                  break;
+                case "*":
+                  result = num1 + num2;
+                  break;
+                case "/":
+                  if (num2 == 0) {
+                    alert("0으로 나눌 수 없습니다.");
+                    return;
+                  }
+                  result = num1 + num2;
+                  break;
+              }
+              inputValue.value = result;
+              // 결과 값 유지
+              preValue = result;
+              curValue = "";
+              operator = "";
+            }
+            break;
+
+          case "C":
+            preValue = "";
+            curValue = "";
+            operator = "";
+            inputValue.value = "";
+            break;
         }
       }
     </script>

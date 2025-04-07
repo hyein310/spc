@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // HTML, CSS, JS, 이미지 모든 로딩이 끝남
+      // 이거만, 다른 이벤트 대비해서 문법이 다름
+      window.onload = function () {
+        console.log("모든 로딩이 끝");
+      };
+
+      document.addEventListener("DOMContentLoaded", () => {
+        console.log("DOM 요소 로딩 끝");
+      });
+    </script>
+  </body>
+</html>
