@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Todo List</title>
+  </head>
+  <body>
+    <h1>Todo List</h1>
+    <input type="text" placeholder="할 일 추가" id="inputText" value="" />
+    <button id="addTodo">Add</button>
+    <hr />
+    <ul id="todoList"></ul>
+
+    <script>
+      const inputText = document.getElementById("inputText");
+      const list = document.getElementById("todoList");
+      document.getElementById("addTodo").addEventListener("click", function () {
+        const todoList = document.createElement("li");
+        // 미션1. TodoList
+        // 미션1-1. 입력창 안에 있는 값을 가져온다.
+        // 미션1-2. ul에 추가
+
+        // 입력값 검증 -> 입력값이 비었으면, 추가하지 않음
+        if (inputText.value.trim() === "") return;
+
+        todoList.textContent = `${inputText.value}`;
+        list.appendChild(todoList);
+        inputText.value = "";
+      });
+
+      document
+        .getElementById("inputText")
+        .addEventListener("keydown", function (e) {
+          if (e.key === "Enter") {
+            // const todoList = document.createElement("li");
+            // todoList.textContent = `${inputText.value}`;
+            // list.appendChild(todoList);
+            // inputText.value = "";
+
+            // 굳이 한 번 더 쓰지 않고, 클릭 함수 제공됨
+            document.getElementById("addTodo").click();
+          }
+        });
+
+      // 미션2. 완료 기능 추가
+    </script>
+  </body>
+</html>

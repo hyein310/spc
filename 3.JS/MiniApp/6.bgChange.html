@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+        text-align: center;
+        align-items: center;
+      }
+      button {
+        padding: 10px 20px;
+        font-size: 18px;
+        margin-bottom: 20px;
+      }
+      #colorCode {
+        font-size: 36px;
+        font-weight: bold;
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <button id="changeBg">배경 색상 랜덤 변경</button>
+    <div id="colorCode"></div>
+    <script>
+      // 미션1. 버튼을 클릭하면 랜덤 색상으로 바꾼다.
+      const changeBtn = document.getElementById("changeBg");
+      const body = document.body;
+      const colorCode = document.getElementById("colorCode");
+
+      changeBtn.addEventListener("click", function () {
+        let R = parseInt(Math.random() * 255) + 1;
+        let G = parseInt(Math.random() * 255) + 1;
+        let B = parseInt(Math.random() * 255) + 1;
+        body.style.backgroundColor = `rgb(${R},${G},${B})`;
+        colorCode.textContent = `rgb(${R},${G},${B})`;
+      });
+
+      // 만약 hex 코드로 변환하고 싶으면
+      // 16진수로 변환해서 해결 ( toString(16) 이용 )
+      // -> 2자리로 맞춰서 패딩 해야함 (padStart(2, '0') 이용)
+    </script>
+  </body>
+</html>
