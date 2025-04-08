@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .gallery img {
+        width: 100px;
+        height: 100px;
+        margin: 5px;
+        cursor: pointer;
+      }
+      #largeImg {
+        display: none;
+        max-width: 100%;
+        margin: 20px auto;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>이미지 갤러리</h1>
+    <div class="gallery">
+      <img id="img1" src="./img/dog1.jpg" alt="dog1" />
+      <img id="img2" src="./img/dog2.jpeg" alt="dog2" />
+      <img id="img3" src="./img/dog3.jpg" alt="dog3" />
+    </div>
+    <img id="largeImg" src="" alt="쇼 룸" />
+    <script>
+      // 미션1. 마우스로 클릭한 이미지를 크게 보여주기
+      const dogImg = document.getElementsByTagName("img");
+      const largeImg = document.getElementById("largeImg");
+      console.log(dogImg); // dogImg[]
+
+      // 방법 1. 더미 빈 이미지 사용해서 scr 치환
+      //   img1.addEventListener("click", function() {
+
+      //   })
+
+      for (let i = 0; i < dogImg.length; i++) {
+        dogImg[i].addEventListener("click", function (e) {
+          e.preventDefault();
+          largeImg.src = dogImg[i].src;
+          largeImg.style.display = "block";
+        });
+      }
+
+      //   모던 JS 스타일
+      //   dogImg.forEach(function (img) {
+      //     img.addEventListener("click", function (e) {
+      //       e.preventDefault();
+      //       largeImg.src = dogImg[i].src;
+      //       largeImg.style.display = "block";
+      //     });
+      //   });
+
+      // querySelectorAll 방법
+      // 변수조차 사전에 선언 안하고, LoC 를 최소화 한 상태
+      //   document.querySelector(
+      //     ".gallery img",
+      //     forEach(function (img) {
+      //       img.addEventListener("click", function () {
+      //         const large = document.getElementById("largeImg");
+      //         large.src = dogImg[i].src;
+      //         large.style.display = "block";
+      //       });
+      //     })
+      //   );
+    </script>
+  </body>
+</html>

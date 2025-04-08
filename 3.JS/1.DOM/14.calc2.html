@@ -85,7 +85,7 @@
       function clickSimbol(inputSimbol) {
         const curValue = inputValue.value.slice(-1); // 가장 최근값
         // const curValue = inputValue.value.charAt(inputValue.value.length - 1); // 가져오고 싶은 값
-        console.log(curValue);
+        // console.log(curValue);
 
         if (isSymbol(inputSimbol)) {
           inputValue.value = inputValue.value + inputSimbol;
@@ -103,8 +103,49 @@
       }
 
       function calc() {
-        console.log(inputValue.value);
-        inputValue.value = eval(inputValue.value);
+        // console.log(inputValue.value);
+        // inputValue.value = eval(inputValue.value);
+
+        if (isDivisionByZero(inputValue.value)) {
+          inputValue.value = "0으로 나눌 수 없습니다.";
+        } else {
+          try {
+            inputValue.value = eval(inputValue.value);
+          } catch (error) {
+            inputValue.value = "ERROR";
+            inputValue.style.color = "red";
+          }
+        }
+
+        // 오류 처리
+        // 0 나눗셈 방지하기
+
+        // 입력값 내에서
+        // "/" 있는지 보고 "/" 뒤에 있는 것이 숫자가 0인지
+        // if (isDivisionByZero(inputValue.value)) {
+        //   inputValue.value = "0으로 나눌 수 없습니다.";
+        // } else {
+        //   // 마지막 글자가 부호로 끝나는지 확인
+        //   const lastChar = inputValue.value.slice(-1);
+        //   if (isSymbol(lastChar)) {
+        //     inputValue.value = "부호로 끝날 수 없습니다.";
+        //   } else {
+        //     inputValue.value = eval(inputValue.value);
+        //   }
+        // }
+      }
+
+      function isDivisionByZero(expression) {
+        // 7+3/2
+        for (let i = 0; i < expression.length; i++) {
+          console.log(expression[i]);
+          if (expression[i] === "/") {
+            if (expression[i + 1] === "0") {
+              return true;
+            }
+          }
+        }
+        return false;
       }
     </script>
   </body>
