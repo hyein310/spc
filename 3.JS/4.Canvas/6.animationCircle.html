@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      canvas {
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="myCanvas" width="400" height="300"></canvas>
+    <script>
+      const canvas = document.getElementById("myCanvas");
+      const ctx = canvas.getContext("2d");
+      let randx = Math.random() * canvas.width - 20;
+      let randy = Math.random() * canvas.height - 20;
+      let x = 0;
+      let y = 0;
+      let direction = 1;
+
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height); // 사각형이 이동.. 지우고 그리고 지우고 그리고
+
+        ctx.fillStyle = "red";
+        ctx.beginPath();
+        ctx.arc(randx, randy, 20, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.closePath();
+
+        x += 2 * direction;
+        y += 2 * direction;
+        randx = x;
+        randy = y;
+
+        if (x + 20 > canvas.width || y + 20 > canvas.height) {
+          // 화면 끝에 갔으면 방향 바꾸기
+          direction = -1;
+          x = Math.random() * canvas.width - 20;
+          y = Math.random() * canvas.height - 20;
+        }
+
+        if (x < 0 || y < 0) {
+          // 화면 앞에 왔으면 방향 바꾸고
+          direction = 1;
+          x = Math.random() * canvas.width - 20;
+          y = Math.random() * canvas.height - 20;
+        }
+
+        requestAnimationFrame(draw);
+      }
+
+      draw();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      canvas {
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="myCanvas" width="400" height="300"></canvas>
+    <script>
+      const canvas = document.getElementById("myCanvas");
+      const ctx = canvas.getContext("2d");
+      let x = 0;
+      let direction = 1;
+
+      function draw() {
+        // 미션1. 네모가 끝까지 간 다음에 거꾸로 오게 하려면?
+        ctx.clearRect(0, 0, canvas.width, canvas.height); // 사각형이 이동.. 지우고 그리고 지우고 그리고
+
+        ctx.fillStyle = "red";
+        ctx.fillRect(x, 50, 50, 50);
+
+        x += 5 * direction;
+
+        if (x + 50 > canvas.width) {
+          // 화면 끝에 갔으면 방향 바꾸기
+          direction = -1;
+        }
+
+        if (x < 0) {
+          // 화면 앞에 왔으면 방향 바꾸고
+          direction = 1;
+        }
+
+        // 미션2. 왜 오른쪽에는 넘칠까?
+
+        // refreshRate
+        // 모니터의 주사율에 따라서 초당 그리는 횟수(Hz)
+        requestAnimationFrame(draw);
+      }
+
+      draw();
+    </script>
+  </body>
+</html>

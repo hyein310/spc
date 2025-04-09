@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      canvas {
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="myCanvas" width="400" height="300"></canvas>
+
+    <script>
+      const canvas = document.getElementById("myCanvas");
+      const context = canvas.getContext("2d"); //2D 그래픽을 그릴 수 있는 영역 컨텍스트라고 정의한 변수로 할당
+
+      // 1. 직사각형 그리기
+      // 1-1. 채우기
+      context.fillStyle = "#FF0000"; // red
+      context.fillRect(50, 50, 100, 80); // (x, y, width, height)
+
+      // 1-2. 선만 그리기
+      context.strokeStyle = "blue";
+      context.strokeRect(100, 100, 100, 80);
+
+      //   2. 선 그리기
+      context.strokeStyle = "blue";
+      context.lineWidth = 2; // 선 두께
+      context.beginPath();
+      context.moveTo(200, 50); // 첫번째 좌표
+      context.lineTo(300, 130); // 시작점부터 여기까지 선을 그려라
+      context.stroke(); // 그리기
+      context.closePath();
+
+      // 3. 원 그리기
+      context.fillStyle = "green";
+      context.beginPath();
+      // startAngle = 0이면, 우측 중간부터 시작
+      context.arc(350, 50, 30, 0, 2 * Math.PI); // x, y , radius(반지름), startAngle, endAngle ** 이 때 각도의 단위는 radience
+      context.fill();
+      context.closePath();
+
+      context.fillStyle = "green";
+      context.beginPath();
+      context.arc(350, 150, 30, 0, Math.PI);
+      context.fill();
+      context.strokeStyle = "blue";
+      context.stroke();
+      context.closePath();
+    </script>
+  </body>
+</html>

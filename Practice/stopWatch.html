@@ -5,24 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <style>
+      body {
+        background-color: aliceblue;
+      }
       #container {
         display: flex;
         flex-direction: column;
         justify-content: center;
         text-align: center;
         align-items: center;
+        margin-top: 100px;
+        color: darkblue;
       }
-      #timeValue {
+      #timer {
         font-size: 50px;
         font-weight: bold;
         margin-bottom: 20px;
+        color: black;
       }
       #btnContainer .btns {
         width: 100px;
         height: 40px;
         font-size: 20px;
-        margin: 10px;
+        margin: 5px;
         cursor: pointer;
+        background-color: azure;
+        border-radius: 10%;
+      }
+
+      #btnContainer .btns:hover {
+        transform: translateX(-5px);
+        transform: translateY(-5px);
       }
     </style>
   </head>
@@ -31,7 +44,7 @@
     <!-- Date() 객체 활용해서 00:00:00(분,초,밀리초) 형태의 시간 표현 -->
     <div id="container">
       <h1>STOP WATCH !</h1>
-      <div id="timer">00:00:00</div>
+      <div id="timer">00:00.00</div>
       <div id="btnContainer">
         <button id="startBtn" class="btns">start</button>
         <button id="stopBtn" class="btns">stop</button>
@@ -43,32 +56,76 @@
       const startBtn = document.getElementById("startBtn");
       const stopBtn = document.getElementById("stopBtn");
       const resetBtn = document.getElementById("resetBtn");
+      const timer = document.getElementById("timer");
       // 시작버튼 눌렀을 때 시간
       let startTime;
+      // 업데이트된 시간
+      let updatedTime;
+      let timeInterval;
+      // 타이머의 실행 여부
+      let running = false;
 
-      // start
-      startBtn.addEventListener("click", function () {
-        startTime = new Date();
-        document.getElementById("timer").textContent = "00:00.00";
+      function startTimer() {
         console.log("startTime : ", startTime);
-      });
 
-      // stop
-      stopBtn.addEventListener("click", function () {
-        if (!startTime) return;
+        if (!running) {
+          // 실행중이 아닐 때
+          startTime = new Date().getTime();
+          timeInterval = setInterval(updatedTimer, 10); // 10ms
+        } else {
+          // 실행중일 때
+          console.log("******* : ", startTime);
+          timeInterval = setInterval(updatedTimer, 10); // 10ms
+        }
+      }
 
+      function updatedTimer() {
         // 현재 시간
-        const currentTime = new Date();
+        updatedTime = new Date().getTime();
         // 타이머 값
         // 5초 -> timeValue = 5000 (ms)
         // 1분 = 60초 = 60 x 1000 (ms) = 60000 (ms)
-        // 1초 = 60000 / 60
-        const timeValue = currentTime - startTime; // ms 단위
-        console.log("timeValue : ", timeValue);
+        // 1초 = 60000 * 60
 
-        const min = Math.floor(timeValue / 60000);
-        const sec = Math.floor(timeValue);
-      });
+        const timeValue = updatedTime - startTime; // ms 단위
+
+        let min = String(Math.floor(timeValue / 60000)).padStart(2, "0");
+        let sec = String(Math.floor((timeValue / 1000) % 60)).padStart(2, "0");
+        let milSec = String(Math.floor((timeValue % 1000) / 10)).padStart(
+          2,
+          "0"
+        );
+
+        timer.textContent = `${min}:${sec}.${milSec}`;
+
+        // 삼항 연산자 이용
+        // timer.textContent =
+        // (min < 10 ? "0" + min : min) + ":" +
+        // (sec < 10 ? "0" + sec : sec) + ":" +
+        // (milSec < 10 ? "0" + milSec : milSec);
+      }
+
+      function stopTimer() {
+        // 반복적으로 수행하는 것 초기화
+        console.log("timeStamp : ", timer.textContent);
+        // startTime = timer.textContent;
+        clearInterval(timeInterval);
+        running = false;
+      }
+
+      function resetTimer() {
+        timer.textContent = "00:00.00";
+        startTime = "";
+      }
+
+      // start
+      startBtn.addEventListener("click", startTimer);
+
+      // stop
+      stopBtn.addEventListener("click", stopTimer);
+
+      // reset
+      resetBtn.addEventListener("click", resetTimer);
     </script>
   </body>
 </html>
