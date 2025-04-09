@@ -6,12 +6,19 @@
     <title>Snake Game</title>
     <style>
       canvas {
-        border: 1px solid black;
+        border: 2px solid black;
+        margin: 20px;
+        display: flex;
+        flex-direction: column;
+      }
+      span {
+        margin-left: 30px;
       }
     </style>
   </head>
   <body>
     <canvas id="snakeCanvas" width="300" height="300"></canvas>
+    <span>Enter를 누르면 뱀을 멈출 수 있습니다.</span>
     <script src="snake.js"></script>
   </body>
 </html>
