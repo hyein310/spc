@@ -15,8 +15,11 @@
     <script>
       const canvas = document.getElementById("myCanvas");
       const ctx = canvas.getContext("2d");
-      let randx = Math.random() * canvas.width - 20;
-      let randy = Math.random() * canvas.height - 20;
+      const BOX_SIZE = 20;
+      // 목표 좌표
+      let randx = 50;
+      let randy = 50;
+      // 현재 좌표
       let x = 0;
       let y = 0;
       let direction = 1;
@@ -24,9 +27,9 @@
       function draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height); // 사각형이 이동.. 지우고 그리고 지우고 그리고
 
-        ctx.fillStyle = "red";
         ctx.beginPath();
-        ctx.arc(randx, randy, 20, 0, 2 * Math.PI);
+        ctx.fillStyle = "red";
+        ctx.arc(randx, randy, BOX_SIZE, 0, 2 * Math.PI);
         ctx.fill();
         ctx.closePath();
 
@@ -35,18 +38,18 @@
         randx = x;
         randy = y;
 
-        if (x + 20 > canvas.width || y + 20 > canvas.height) {
+        if (x > canvas.width - BOX_SIZE || y > canvas.height - BOX_SIZE) {
           // 화면 끝에 갔으면 방향 바꾸기
           direction = -1;
-          x = Math.random() * canvas.width - 20;
-          y = Math.random() * canvas.height - 20;
+          x = Math.random() * canvas.width - BOX_SIZE;
+          y = Math.random() * canvas.height - BOX_SIZE;
         }
 
         if (x < 0 || y < 0) {
           // 화면 앞에 왔으면 방향 바꾸고
           direction = 1;
-          x = Math.random() * canvas.width - 20;
-          y = Math.random() * canvas.height - 20;
+          x = Math.random() * canvas.width - BOX_SIZE;
+          y = Math.random() * canvas.height - BOX_SIZE;
         }
 
         requestAnimationFrame(draw);
