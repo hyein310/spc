@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>TTS Prac</h1>
+    <textarea id="text" rows="4" cols="50">
+Hello, this is a text-to-speech example.</textarea
+    >
+    <button onclick="Speak()">Speak</button>
+    <script>
+      function Speak() {
+        const text = document.getElementById("text").value;
+        console.log("text : ", text);
+        // TTS 읽어주는 메소드
+        const speech = new SpeechSynthesisUtterance(text);
+        window.speechSynthesis.speak(speech);
+        // mdn에서 검색해보면 api 나옴
+      }
+    </script>
+  </body>
+</html>
