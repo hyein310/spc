@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
+      crossorigin="anonymous"
+    ></script>
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="container my-4">
+      <button id="loadButton" class="btn btn-primary mb-3">
+        <div
+          class="spinner-border spinner-border-sm d-none"
+          role="status"
+        ></div>
+        Load Data
+      </button>
+      <button id="clearButton" class="btn btn-danger mb-3">Clear!</button>
+      <div id="result" class="alert alert-success d-none" role="alert"></div>
+    </div>
+
+    <script>
+      const loadButton = document.getElementById("loadButton");
+      const clearBtn = document.getElementById("clearButton");
+      const spinner = loadButton.querySelector(".spinner-border-sm");
+      const result = document.getElementById("result");
+
+      // Load
+      loadButton.addEventListener("click", function () {
+        let randID = parseInt(Math.random() * 99) + 1;
+        loadButton.disabled = true;
+        spinner.classList.remove("d-none");
+        result.classList.remove("d-none");
+
+        fetch(`https://jsonplaceholder.typicode.com/posts/${randID}`)
+          .then((response) => {
+            return response.json();
+          })
+          .then((data) => {
+            console.log(data);
+
+            const title = data.title;
+            const content = data.body;
+
+            document.getElementById(
+              "result"
+            ).innerHTML = `<h3><strong>${title}</h3></strong>
+            <p>${content}</p>`;
+
+            loadButton.disabled = false;
+            spinner.classList.add("d-none");
+          })
+          .catch((err) => {
+            document.getElementById("result").innerHTML = `
+          <p><strong>오류 : </strong>${err}</p>
+          `;
+          });
+      });
+
+      // Clear
+      clearBtn.addEventListener("click", function () {
+        clearBtn.disabled = true;
+        result.classList.replace("alert-success", "alert-warning");
+        result.innerHTML = `<div class="spinner-border text-danger" role="status"></div>
+         <span>Clearing Data</span>`;
+      });
+    </script>
+  </body>
+</html>
