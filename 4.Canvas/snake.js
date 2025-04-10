@@ -4,6 +4,7 @@ const CONTAINER = 300;
 
 let snake = { x: 0, y: 0, directionX: 0, directionY: 0 };
 let apple = getRandomApple();
+let scoreCnt = 0;
 
 // DOM 과 각종 필요한 컴포넌트 로딩 이후 실행
 window.onload = initialize;
@@ -94,9 +95,13 @@ function getRandomApple() {
   return { x, y };
 }
 
+// 사과 먹은 유무 확인
 function checkApple() {
   if (snake.x === apple.x && snake.y === apple.y) {
     apple = getRandomApple();
+    scoreCnt += 1;
+    let score = document.getElementById("score");
+    score.textContent = `먹은 사과 수 : ${scoreCnt}`;
   }
 }
 
@@ -105,8 +110,8 @@ function gameLoop() {
   // 뱀 이동
   moveSnake();
   // 뱀 화면 렌더링
-  drawSnake();
   checkApple();
+  drawSnake();
 }
 
 // 키보드 이벤트 핸들러
