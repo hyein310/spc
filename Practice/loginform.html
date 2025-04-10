@@ -26,47 +26,54 @@
       <h1>회원가입 폼</h1>
       <form id="exampleForm">
         <!-- 사용자명 -->
-        <div class="mb-3">
-          <label for="id" class="form-label">사용자명</label>
+        <label for="id" class="form-label">사용자명</label>
+        <div class="input-group">
+          <i class="bi bi-person input-group-text"></i>
           <input
             type="text"
             id="id"
             name="id"
             class="form-control"
-            placeholder="사용자명을 입력하세요."
+            placeholder="3~10글자로 입력하세요."
             required
           />
         </div>
+        <div id="id-error" class="form-text text-danger mb-3"></div>
 
         <!-- 비밀번호 -->
-        <div class="mb-3">
-          <label for="password" class="form-label">비밀번호</label>
+        <label for="password" class="form-label">비밀번호</label>
+        <div class="input-group">
+          <i class="bi bi-lock input-group-text"></i>
           <input
             type="password"
             id="password"
             name="password"
             class="form-control"
-            placeholder="비밀번호를 입력하세요."
+            placeholder="대소문자, 숫자/특수문자 포함 8자 이상."
             required
           />
         </div>
+        <div id="password-error" class="form-text text-danger mb-3"></div>
 
         <!-- 이름 -->
-        <div class="mb-3">
-          <label for="name" class="form-label">이름</label>
+        <label for="name" class="form-label">이름</label>
+        <div class="input-group">
+          <i class="bi bi-card-text input-group-text"></i>
           <input
             type="text"
             id="name"
             name="name"
             class="form-control"
-            placeholder="이름을 입력하세요."
+            placeholder="1~10글자로 입력하세요."
             required
           />
         </div>
+        <div id="name-error" class="form-text text-danger mb-3"></div>
 
         <!-- 생년월일 -->
-        <div class="mb-3">
-          <label for="date" class="form-label">생년월일</label>
+        <label for="date" class="form-label">생년월일</label>
+        <div class="input-group mb-3">
+          <i class="bi bi-calendar input-group-text"></i>
           <input
             type="date"
             id="date"
@@ -85,7 +92,7 @@
               <input
                 type="checkbox"
                 id="interest1"
-                name="interest1"
+                name="interest"
                 value="interest1"
               />
               <label for="interest1" class="form-label">관심 분야1</label>
@@ -94,7 +101,7 @@
               <input
                 type="checkbox"
                 id="interest2"
-                name="interest2"
+                name="interest"
                 value="interest2"
               />
               <label for="interest2" class="form-label">관심 분야2</label>
@@ -103,7 +110,7 @@
               <input
                 type="checkbox"
                 id="interest3"
-                name="interest3"
+                name="interest"
                 value="interest3"
               />
               <label for="interest3" class="form-label">관심 분야3</label>
@@ -112,7 +119,7 @@
               <input
                 type="checkbox"
                 id="interest4"
-                name="interest4"
+                name="interest"
                 value="interest4"
               />
               <label for="interest4" class="form-label">관심 분야4</label>
@@ -126,28 +133,6 @@
     <!-- 결과 출력 공간 -->
     <div id="result" class="mt-4"></div>
 
-    <script>
-      const form = document.getElementById("exampleForm");
-      const resultDiv = document.getElementById("result");
-
-      form.addEventListener("submit", function (e) {
-        e.preventDefault(); // 서버로 전송하는 기본 기능 작동 막기
-
-        // 폼 데이터 가져 오기
-        // 위에 폼을 객체에 넣고, get 함수를 통해서 필드 내용 가져오기
-        const formData = new FormData(form);
-        const name = formData.get("name");
-        const email = formData.get("email");
-        const password = formData.get("password");
-
-        // 결과 출력
-        resultDiv.innerHTML = `<div class="alert alert-success">
-        <h5>폼 데이터 제출 완료!</h5>
-        <p><strong>이름: </strong>${name}</p>
-        <p><strong>이메일: </strong>${email}</p>
-        <p><strong>비밀번호: </strong>${password}</p>
-     </div>`;
-      });
-    </script>
+    <script src="loginform.js"></script>
   </body>
 </html>
