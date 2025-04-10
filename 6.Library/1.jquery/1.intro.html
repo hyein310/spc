@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <!-- jQuery 사용시 꼭 CDN 넣어줘야 함!!-->
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.min.js"
+      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <h1 id="myHeading">Hi, JQuery</h1>
+    <button id="myBtn">글자 바꾸기</button>
+
+    <script>
+      //   document.addEventListener("DOMContentLoaded", function () {
+      //     document.getElementById("myBtn").addEventListener("click", function () {
+      //       document.getElementById("myHeading").textContent = "글자 변경";
+      //     });
+      //   });
+
+      $(document).ready(function () {
+        $("#myBtn").click(function () {
+          $("#myHeading").text("제이쿼리로 글자 변경");
+        });
+      });
+    </script>
+  </body>
+</html>

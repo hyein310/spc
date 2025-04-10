@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <title>Document</title>
+  </head>
+  <body>
+    <canvas id="myChart"></canvas>
+    <script>
+      const ctx = document.getElementById("myChart").getContext("2d");
+
+      const barChart = new Chart(ctx, {
+        type: "bar",
+        data: {
+          // 가로축
+          labels: ["A", "B", "C", "D", "E"],
+          datasets: [
+            {
+              // title
+              label: "My Dataset's Title",
+              data: [1, 2, 3, 4, 5],
+              backgroundColor: ["red", "blue", "green", "orange", "pink"],
+            },
+          ],
+        },
+      });
+    </script>
+  </body>
+</html>
