@@ -34,6 +34,7 @@
       const clearBtn = document.getElementById("clearButton");
       const spinner = loadButton.querySelector(".spinner-border-sm");
       const result = document.getElementById("result");
+      let contentId = 0;
 
       // Load
       loadButton.addEventListener("click", function () {
@@ -51,6 +52,7 @@
 
             const title = data.title;
             const content = data.body;
+            contentId = data.id;
 
             document.getElementById(
               "result"
@@ -69,10 +71,29 @@
 
       // Clear
       clearBtn.addEventListener("click", function () {
+        const userId = "";
         clearBtn.disabled = true;
         result.classList.replace("alert-success", "alert-warning");
         result.innerHTML = `<div class="spinner-border text-danger" role="status"></div>
          <span>Clearing Data</span>`;
+
+        fetch(`https://jsonplaceholder.typicode.com/posts/${contentId}`)
+          .then((response) => {
+            return response.json();
+          })
+          .then((data) => {
+            console.log("삭제 : ", data);
+
+            document.getElementById("result").innerText = "";
+
+            clearBtn.disabled = false;
+            result.classList.add("d-none");
+          })
+          .catch((err) => {
+            document.getElementById("result").innerHTML = `
+          <p><strong>오류 : </strong>${err}</p>
+          `;
+          });
       });
     </script>
   </body>
