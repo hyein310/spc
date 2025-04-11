@@ -25,7 +25,9 @@
         ></div>
         Load Data
       </button>
-      <button id="clearButton" class="btn btn-danger mb-3">Clear!</button>
+      <button id="clearButton" class="btn btn-danger mb-3" disabled>
+        Clear!
+      </button>
       <div id="result" class="alert alert-success d-none" role="alert"></div>
     </div>
 
@@ -34,22 +36,23 @@
       const clearBtn = document.getElementById("clearButton");
       const spinner = loadButton.querySelector(".spinner-border-sm");
       const result = document.getElementById("result");
+      clearBtn.disabled = true;
       let contentId = 0;
 
       // Load
       loadButton.addEventListener("click", function () {
         let randID = parseInt(Math.random() * 99) + 1;
         loadButton.disabled = true;
+        clearBtn.disabled = false;
         spinner.classList.remove("d-none");
         result.classList.remove("d-none");
+        result.className = "alert alert-success";
 
         fetch(`https://jsonplaceholder.typicode.com/posts/${randID}`)
           .then((response) => {
             return response.json();
           })
           .then((data) => {
-            console.log(data);
-
             const title = data.title;
             const content = data.body;
             contentId = data.id;
@@ -82,11 +85,7 @@
             return response.json();
           })
           .then((data) => {
-            console.log("삭제 : ", data);
-
             document.getElementById("result").innerText = "";
-
-            clearBtn.disabled = false;
             result.classList.add("d-none");
           })
           .catch((err) => {
