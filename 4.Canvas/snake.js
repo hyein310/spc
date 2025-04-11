@@ -26,7 +26,7 @@ function drawSnake() {
   context.beginPath();
   context.moveTo(snake.x, snake.y);
   context.fillStyle = "blue";
-  context.fillRect(snake.x, snake.y, BLOCK_SIZE, BLOCK_SIZE);
+  context.fillRect(snake.x, snake.y, BLOCK_SIZE * (scoreCnt + 1), BLOCK_SIZE);
   context.closePath();
 
   // 사과 그리기
@@ -99,6 +99,7 @@ function getRandomApple() {
 function checkApple() {
   if (snake.x === apple.x && snake.y === apple.y) {
     apple = getRandomApple();
+
     scoreCnt += 1;
     let score = document.getElementById("score");
     score.textContent = `먹은 사과 수 : ${scoreCnt}`;
