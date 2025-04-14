@@ -1,3 +1,4 @@
-node_modules
+# 기본 모드 모듈
+node_modules/
 package-lock.jsonS
 .env
