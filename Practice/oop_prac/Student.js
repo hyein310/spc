@@ -1,11 +1,13 @@
-class Student {
+const Person = require("./Person");
+
+class Student extends Person {
   constructor(name, major) {
-    this.name = name;
+    super(name);
     this.major = major;
   }
 
   greeting() {
-    return console.log(`안녕하세요. ${this.major} ${super.name} 입니다.`);
+    return console.log(`저는 ${this.major} ${this.name} 입니다.`);
   }
 }
 

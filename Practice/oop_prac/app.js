@@ -11,4 +11,10 @@ const Employee = require("./Employee");
 
 const exPerson = new Person("hyein");
 const exGreeting = exPerson.greeting();
+const exStudent = new Student("junghyun", "computer science");
+const exGreeting2 = exStudent.greeting();
+const exEmployee = new Employee("minju", "leader");
+const exGreeting3 = exEmployee.greeting();
 console.log(exGreeting);
+console.log(exGreeting2);
+console.log(exGreeting3);

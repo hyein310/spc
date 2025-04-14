@@ -1,8 +1,8 @@
 const Person = require("./Person");
 
 class Parents extends Person {
-  playInCar() {
-    return `${this.name}이(가) 차 안에서 장난을 치고 있습니다.`;
+  driveCar(Car) {
+    return `${this.name}이(가) ${Car.brand} ${Car.model}를 운전하고 있습니다.`;
   }
 }
 
