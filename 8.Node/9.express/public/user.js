@@ -3,8 +3,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const username = document.getElementById("username");
   const userTable = document.getElementById("userTable");
 
-  updateTable();
-
   form.addEventListener("submit", (e) => {
     e.preventDefault();
     const name = username.value;
@@ -21,30 +19,25 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   function updateTable() {
-    // userTable.innerHTML = ""; // 이전 내용 삭제
+    userTable.innerHTML = "";
 
     fetch("/user")
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
-        console.log("data userid : ", data.userId);
+        console.log("data : ", data); // [{userId: 1, name: 'dd'}, {} ..]
 
-        const row = document.createElement("div");
-        row.innerHTML = `
-            <strong>아이디 : </strong> ${data.userId}, 
-            <strong>유저 이름 : </strong> ${data.name}`;
+        data.forEach((user) => {
+          const row = document.createElement("div");
+          row.innerHTML = `
+          <strong>아이디 : </strong> ${user.userId}, 
+          <strong>유저 이름 : </strong> ${user.name}
+        `;
 
-        row.appendChild(
-          createBtn("수정", () => {
-            editUser(data.userId);
-          })
-        );
-        row.appendChild(
-          createBtn("삭제", () => {
-            deleteUser(data.userId);
-          })
-        );
-        userTable.appendChild(row);
+          row.appendChild(createBtn("수정", () => editUser(user.userId)));
+          row.appendChild(createBtn("삭제", () => deleteUser(user.userId)));
+
+          userTable.appendChild(row);
+        });
       });
   }
 
@@ -61,16 +54,35 @@ document.addEventListener("DOMContentLoaded", () => {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId, newName }),
-    });
-    updateTable();
+    })
+      .then((res) => {
+        // 나머지 모든 부분에서도 이런식으로 에러처리를 해야 좋음.
+        if (!res.ok) throw new Error("수정 실패");
+        alert("수정 성공");
+        updateTable();
+      })
+      .catch((error) => {
+        alert("수정 중 오류 발생");
+      });
   }
 
   function deleteUser(userId) {
-    fetch(`/user/${userId}`, {
-      method: "DELETE",
-    });
-    updateTable();
+    const confirmDelete = confirm("정말로 삭제하시겠습니까?");
+    if (confirmDelete) {
+      fetch(`/user/${userId}`, {
+        method: "DELETE",
+      })
+        .then((res) => {
+          if (!res.ok) throw new Error("삭제 실패");
+          updateTable();
+          alert("삭제 성공");
+        })
+        .catch((error) => {
+          console.error("삭제 중 오류 발생: ", error);
+          alert("삭제 중 오류 발생");
+        });
+    } else {
+      alert("장난치지 마시오...");
+    }
   }
-  // 미션1. 입력이 끝났으면 입력 칸 클리어
-  // 미션2. 입력이 끝났으면 서버에 정보 요청해서 화면에 표시
 });
