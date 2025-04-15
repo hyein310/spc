@@ -2,9 +2,10 @@ const express = require("express");
 const app = express();
 const PORT = 3000;
 let userList = {};
-let id = 0; //epoch 값
+let id = 0;
 
 app.use(express.json());
+// app.use(express.urlencoded({ extended: true })); // 문자열 parsing 도와줌
 
 app.get("/", (req, res) => {
   res.send("hello, ex");
