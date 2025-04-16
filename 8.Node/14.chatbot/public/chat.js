@@ -19,6 +19,18 @@ closeChatbot.addEventListener("click", () => {
   chatbotIcon.style.display = "flex";
 });
 
+sendMsg.addEventListener("click", () => {
+  myMsg();
+  messageTrans();
+});
+
+chatbotInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    myMsg();
+    messageTrans();
+  } else return;
+});
+
 function messageTrans() {
   const question = chatbotInput.value;
   fetch("/api/chat", {
@@ -31,29 +43,26 @@ function messageTrans() {
       console.log(data);
 
       const chat = document.createElement("div");
+      chat.className = "chatbot-messages";
       chat.textContent = `echo: ${data.question}`;
-      chatbotMessages.appendChild(chat);
+      chatbotView.appendChild(chat);
+      chatbotView.scrollTo({
+        top: chatbotView.scrollHeight,
+        behavior: "smooth",
+      });
     });
 
   chatbotInput.value = "";
 }
 
-sendMsg.addEventListener("click", () => {
+function myMsg() {
   const question = chatbotInput.value;
   const userchat = document.createElement("div");
+  userchat.className = "user-messages";
   userchat.textContent = `나: ${question}`;
-  console.log("usermsg : ", userMessages);
-  userMessages.appendChild(userchat);
-
-  messageTrans();
-});
-
-chatbotInput.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
-    const question = chatbotInput.value;
-    const userchat = document.createElement("div");
-    userchat.textContent = `나: ${question}`;
-    userMessages.appendChild(userchat);
-    messageTrans();
-  } else return;
-});
+  chatbotView.appendChild(userchat);
+  chatbotView.scrollTo({
+    top: chatbotView.scrollHeight,
+    behavior: "smooth",
+  });
+}
