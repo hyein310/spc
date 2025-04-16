@@ -1,5 +1,8 @@
 const myContainer = document.getElementById("scroll-container");
 const NUM_OF_ITEMS_PAGE = 10;
+const MAX_ITEMS = 20;
+const TOTAL_ITEMS = 200;
+
 let start = 0;
 let end = start + NUM_OF_ITEMS_PAGE;
 
@@ -8,6 +11,10 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 async function loading() {
+  if (start >= TOTAL_ITEMS) {
+    return;
+  }
+
   const res = await fetch(`/get-items?start=${start}&end=${end}`);
   const itemInfo = await res.json();
 
@@ -30,13 +37,15 @@ async function loading() {
 window.addEventListener("scroll", () => {
   // console.log("윈도우 높이 : ", window.innerHeight);
   // console.log("스크롤바 위치 : ", window.scrollY);
-  const scrollPosition =
+  const scrollBottom =
     window.innerHeight + window.scrollY >=
     document.documentElement.scrollHeight;
-  console.log("화면끝? ", scrollPosition);
 
-  if (scrollPosition) {
-    // start + 10, end + 10;
-    loading();
+  const scrollTop = window.scrollY === 0;
+
+  if (scrollBottom) {
+    loading(TOTAL_ITEMS);
+  } else if (scrollTop) {
+    loading(TOTAL_ITEMS);
   }
 });
