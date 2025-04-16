@@ -40,11 +40,17 @@ function messageTrans() {
   })
     .then((res) => res.json())
     .then((data) => {
-      console.log(data);
-
       const chat = document.createElement("div");
+      const icon = document.createElement("i");
+      const msg = document.createElement("span");
+
+      console.log(data);
+      icon.className = "bi bi-robot";
       chat.className = "chatbot-messages";
-      chat.textContent = `echo: ${data.question}`;
+      msg.textContent = `Echo: ${data.question}`;
+
+      chat.appendChild(icon);
+      chat.appendChild(msg);
       chatbotView.appendChild(chat);
       chatbotView.scrollTo({
         top: chatbotView.scrollHeight,
@@ -58,8 +64,17 @@ function messageTrans() {
 function myMsg() {
   const question = chatbotInput.value;
   const userchat = document.createElement("div");
+  const icon = document.createElement("i");
+  const msg = document.createElement("span");
+
+  if (!question.trim()) return;
+
+  icon.className = "bi bi-person";
   userchat.className = "user-messages";
-  userchat.textContent = `나: ${question}`;
+  msg.textContent = `나: ${question}`;
+
+  userchat.appendChild(icon);
+  userchat.appendChild(msg);
   chatbotView.appendChild(userchat);
   chatbotView.scrollTo({
     top: chatbotView.scrollHeight,
