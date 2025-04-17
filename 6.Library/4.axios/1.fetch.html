@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>Fetch를 사용한 외부 요청</h1>
+    <button id="loadDataBtn">데이터 로드</button>
+    <button id="postDataBtn">데이터 전송</button>
+    <button id="loadImgBtn">이미지 로드</button>
+    <div id="result">
+      <img src="" alt="" id="dogImg" />
+    </div>
+    <script>
+      document.getElementById("loadDataBtn").addEventListener("click", () => {
+        fetch("https://jsonplaceholder.typicode.com/posts/1")
+          .then((res) => res.json())
+          .then((data) => {
+            document.getElementById("result").innerHTML = `
+            <p><strong>타이틀: </strong></p> ${data.title}
+            <p><strong>본문: </strong></p> ${data.body}
+            `;
+          })
+          .catch((err) => {
+            document.getElementById("result").innerHTML = `<p>오류 발생👾</p>`;
+          });
+      });
+
+      document.getElementById("postDataBtn").addEventListener("click", () => {
+        const postData = {
+          title: "hi",
+          body: "home",
+          userId: 1,
+        };
+        fetch("https://jsonplaceholder.typicode.com/posts", {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json; charset=utf-8",
+          },
+          body: JSON.stringify({ postData }),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            document.getElementById("result").innerText = JSON.stringify(
+              data,
+              null,
+              2
+            );
+          });
+      });
+
+      document.getElementById("loadImgBtn").addEventListener("click", () => {
+        fetch("https://dog.ceo/api/breeds/image/random")
+          .then((res) => {
+            if (!res.ok) {
+              throw new Error("데이터 수신 오류");
+            }
+            return res.json();
+          })
+          .then((data) => {
+            console.log(data);
+            const imgUrl = data.message;
+            document.getElementById("dogImg").src = imgUrl;
+
+            // result 창에 이미지 출력
+          });
+      });
+    </script>
+  </body>
+</html>
