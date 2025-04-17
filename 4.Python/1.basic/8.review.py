@@ -11,10 +11,10 @@ print("2번 result: ", even_nums)
 
 # 각 문자열을 분리하여 대문자로 변한된 리스트를 만들기
 word = "hello"
-upper_letters= [word for word in range(len(word))]
+upper_letters = [x.upper() for x in word]
 print("3번 result: ", upper_letters) # 기대 결과 ["H","E","L","L","O"]
 
 # 글자의 길이가 3글자 이하인 단어만 남기기
 word = ["apple","banana","cherry","egg","grapes"]
-# short_words = [for i in range 5 if(len(word[x]) <= 3) print word[x]]
-# print("4번 result: ", short_words)
+short_words = [i for i in word if(len(i) <= 3)]
+print("4번 result: ", short_words)

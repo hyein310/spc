@@ -20,6 +20,5 @@ print("안녕하세요 {}님, 당신은 {}살 이군요.".format(name,age)) # �
 print("안녕하세요 {1}님, 당신은 {0}살 이군요.".format(name,age)) # 안녕하세요 30님, 당신은 James살 이군요.
 
 #  4. % 연산자 사용
-# -- 찾아보기
-# print("---------4----------")
-# print("helle, s%!" %name)
+print('--- 4 ---')
+print("Hello, %s!" % name)
