@@ -19,3 +19,10 @@ print("안녕하세요.\n만나서\t\t반갑습니다.") # \n은 줄바꿈, \t �
 print ("오늘은", "일요일") # 오늘은일요일 -> 붙여서 나옴
 
 # 07
+print(f"naver;kakao;sk;samsung")
+
+# 08
+print(f"naver/kakao/sk/samsung")
+
+# 09 줄바꿈 없이 출력
+print("first", end="");print("second")
