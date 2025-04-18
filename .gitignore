@@ -2,3 +2,10 @@
 node_modules/
 package-lock.jsonS
 .env
+
+# 윈도우 실행 파일
+*.exe
+
+# 크리덴션은 커밋 제외
+secret.txt
+.env
