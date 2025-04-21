@@ -87,3 +87,39 @@ if current_time[-2:] == "00":
     print("정각")
 else:
     print("정각이 아님")
+
+# 117
+fruit = ["사과", "포도", "홍시"]
+input_value = input("좋아하는 과일은? ")
+if(input_value in fruit):
+    print("정답")
+else: print("오답")
+
+# 118
+warn_investment_list = ["Microsoft", "Google", "Naver", "Kakao", "SAMSUNG", "LG"]
+input_value("투자 종목: ")
+if(input_value in warn_investment_list):
+    print("투자 경고 종목")
+else: print("투자 경고 종목이 아님")
+
+# 119
+fruit = {"봄" : "딸기", "여름" : "토마토", "가을" : "사과"}
+input_value("제가 좋아하는 계절은: ")
+if(input_value in fruit.keys()):
+    print("정답")
+else: print("오답")
+
+# 120
+fruit = {"봄" : "딸기", "여름" : "토마토", "가을" : "사과"}
+input_value("제가 좋아하는 과일은: ")
+if(input_value in fruit.values()):
+    print("정답")
+else: print("오답")
+
+# 121
+input_value("영어 입력: ")
+if(input_value.islower()):
+    print(input_value.upper())
+else: print(input_value.lower())
+
+# 122
