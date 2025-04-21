@@ -97,29 +97,39 @@ else: print("오답")
 
 # 118
 warn_investment_list = ["Microsoft", "Google", "Naver", "Kakao", "SAMSUNG", "LG"]
-input_value("투자 종목: ")
+input_value = input("투자 종목: ")
 if(input_value in warn_investment_list):
     print("투자 경고 종목")
 else: print("투자 경고 종목이 아님")
 
 # 119
 fruit = {"봄" : "딸기", "여름" : "토마토", "가을" : "사과"}
-input_value("제가 좋아하는 계절은: ")
+input_value = input("제가 좋아하는 계절은: ")
 if(input_value in fruit.keys()):
     print("정답")
 else: print("오답")
 
 # 120
 fruit = {"봄" : "딸기", "여름" : "토마토", "가을" : "사과"}
-input_value("제가 좋아하는 과일은: ")
+input_value = input("제가 좋아하는 과일은: ")
 if(input_value in fruit.values()):
     print("정답")
 else: print("오답")
 
 # 121
-input_value("영어 입력: ")
+input_value = input("영어 입력: ")
 if(input_value.islower()):
     print(input_value.upper())
 else: print(input_value.lower())
 
 # 122
+score = input("학점 : ")
+if int(score) >= 81 & int(score) <= 100:
+    print(f"grade is A")
+elif int(score) >= 61 & int(score)<=80:
+    print(f"grade is B")
+elif int(score) >= 41 & int(score)<=60:
+    print(f"grade is C")
+elif int(score) >= 21 & int(score)<=40:
+    print(f"grade is D")
+else: print(f"grade is E")
