@@ -10,3 +10,7 @@ package-lock.jsonS
 secret.txt
 .env
 
+# DB파일 커밋 제외
+.db
+.sqlite
+.sqlite3
