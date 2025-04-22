@@ -48,6 +48,9 @@ else :
     print("4")
 print("5") # 3, 5
 
+# ------------------- input 부분 전부 주석 처리 ------------------------
+
+
 # 111
 # hi = input("입력: ")
 # print(hi*2)
@@ -64,72 +67,92 @@ print("5") # 3, 5
 # else: print("0")
 
 # 114
-input_num = input("입력값: ")
-num = 20 + int(input_num)
-if num > 255:
-    print(255)
-else:
-    print(num)
+# input_num = input("입력값: ")
+# num = 20 + int(input_num)
+# if num > 255:
+#     print(255)
+# else:
+#     print(num)
 
 # 115
-input_num = input("입력값: ")
-num = int(input_num) - 20
-if num > 255:
-    print(255)
-elif num < 0:
-    print(0)
-else:
-    print(num)
+# input_num = input("입력값: ")
+# num = int(input_num) - 20
+# if num > 255:
+#     print(255)
+# elif num < 0:
+#     print(0)
+# else:
+#     print(num)
 
 # 116
-current_time = input("현재시간: ")
-if current_time[-2:] == "00":
-    print("정각")
-else:
-    print("정각이 아님")
+# current_time = input("현재시간: ")
+# if current_time[-2:] == "00":
+#     print("정각")
+# else:
+#     print("정각이 아님")
 
 # 117
-fruit = ["사과", "포도", "홍시"]
-input_value = input("좋아하는 과일은? ")
-if(input_value in fruit):
-    print("정답")
-else: print("오답")
+# fruit = ["사과", "포도", "홍시"]
+# input_value = input("좋아하는 과일은? ")
+# if(input_value in fruit):
+#     print("정답")
+# else: print("오답")
 
 # 118
-warn_investment_list = ["Microsoft", "Google", "Naver", "Kakao", "SAMSUNG", "LG"]
-input_value = input("투자 종목: ")
-if(input_value in warn_investment_list):
-    print("투자 경고 종목")
-else: print("투자 경고 종목이 아님")
+# warn_investment_list = ["Microsoft", "Google", "Naver", "Kakao", "SAMSUNG", "LG"]
+# input_value = input("투자 종목: ")
+# if(input_value in warn_investment_list):
+#     print("투자 경고 종목")
+# else: print("투자 경고 종목이 아님")
 
 # 119
-fruit = {"봄" : "딸기", "여름" : "토마토", "가을" : "사과"}
-input_value = input("제가 좋아하는 계절은: ")
-if(input_value in fruit.keys()):
-    print("정답")
-else: print("오답")
+# fruit = {"봄" : "딸기", "여름" : "토마토", "가을" : "사과"}
+# input_value = input("제가 좋아하는 계절은: ")
+# if(input_value in fruit.keys()):
+#     print("정답")
+# else: print("오답")
 
 # 120
-fruit = {"봄" : "딸기", "여름" : "토마토", "가을" : "사과"}
-input_value = input("제가 좋아하는 과일은: ")
-if(input_value in fruit.values()):
-    print("정답")
-else: print("오답")
+# fruit = {"봄" : "딸기", "여름" : "토마토", "가을" : "사과"}
+# input_value = input("제가 좋아하는 과일은: ")
+# if(input_value in fruit.values()):
+#     print("정답")
+# else: print("오답")
 
 # 121
-input_value = input("영어 입력: ")
-if(input_value.islower()):
-    print(input_value.upper())
-else: print(input_value.lower())
+# input_value = input("영어 입력: ")
+# if(input_value.islower()):
+#     print(input_value.upper())
+# else: print(input_value.lower())
 
 # 122
-score = input("학점 : ")
-if int(score) >= 81 & int(score) <= 100:
-    print(f"grade is A")
-elif int(score) >= 61 & int(score)<=80:
-    print(f"grade is B")
-elif int(score) >= 41 & int(score)<=60:
-    print(f"grade is C")
-elif int(score) >= 21 & int(score)<=40:
-    print(f"grade is D")
-else: print(f"grade is E")
+# score = input("학점 : ")
+# if int(score) >= 81 & int(score) <= 100:
+#     print(f"grade is A")
+# elif int(score) >= 61 & int(score)<=80:
+#     print(f"grade is B")
+# elif int(score) >= 41 & int(score)<=60:
+#     print(f"grade is C")
+# elif int(score) >= 21 & int(score)<=40:
+#     print(f"grade is D")
+# else: print(f"grade is E")
+
+# 123
+# exchange = {
+#         "달러": 1167, 
+#         "엔": 1.096, 
+#         "유로": 1268, 
+#         "위안": 171
+#         }
+# money = input("입력: ")
+# num, currency = money.split()
+# print(float(num) * exchange[currency], "원")
+
+# 124
+# num1 = input("input number1: ")
+# num2 = input("input number2: ")
+# num3 = input("input number3: ")
+# num_list = (int(num1), int(num2), int(num3))
+# print(max(num_list))
+
+# 125

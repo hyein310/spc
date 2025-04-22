@@ -48,6 +48,7 @@ def search_user():
     query = request.args.get("name")
     if not query:
         data = {'error': 'Name is required. 한글 테스트'}
+        # make_response() : 응답 객체 생성
         response = make_response(jsonify(data))
         response.headers["Content-Type"] = "application/json; charset=utf-8"
         return response

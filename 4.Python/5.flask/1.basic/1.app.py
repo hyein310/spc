@@ -20,6 +20,12 @@ def admin(username="Admin"): # express의 /user/:username 형식과 같음, 가�
 # 쿼리 파라미터 처리
 @app.route("/search")
 def search():
+    # ------- request --------
+    # request.get_json() : json 객체 가져옴..  
+    # request.get_json("key") : key값으로 value 바로 조회 == request.args.get("key")
+    # request.args.get("key", "") # key가 없다면 두번째 인자 값 반환(default 값, 기본 None)
+
+    # 만약 POST 요청을 하고 싶으면 request.form.get() 으로 가져오기
     query = request.args.get("q")
     page = request.args.get("page")
 
