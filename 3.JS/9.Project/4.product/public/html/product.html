@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/styles.css"></link>
+  </head>
+  <body>
+    <div id="menuContainer">
+      <h1>Product</h1>
+      <h3 id="username"></h3>
+      <nav>
+        <ul>
+          <li><a href="/login"> 로그인 </a></li>
+          <li><a href="/product"> 상품 </a></li>
+          <li><a href="/cart"> 장바구니 </a></li>
+        </ul>
+      </nav>
+
+      <table style="border: 1px solid black" id="productTable">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+  </body>
+  <script src="../js/product.js">
+  </script>
+</html>

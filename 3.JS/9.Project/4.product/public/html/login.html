@@ -4,8 +4,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <link rel="stylesheet" href="../css/styles.css"></link>
   </head>
   <body>
+  <div id="menuContainer">
+    <h1>Login</h1>
+    <h3 id="username"></h3>
+    <nav>
+      <ul>
+        <li><a href="/">홈</a></li>
+        <li><a href="/login"> 로그인 </a></li>
+        <li><a href="/product"> 상품 </a></li>
+        <li><a href="/cart"> 장바구니 </a></li>
+      </ul>
+    </nav>
+
     <form action="/login" method="post">
       <span>아이디</span>
       <input type="text" name="username" />
@@ -13,5 +26,6 @@
       <input type="password" name="password" />
       <button id="loginBtn" type="submit">로그인</button>
     </form>
+  </div>
   </body>
 </html>

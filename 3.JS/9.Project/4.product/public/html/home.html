@@ -4,20 +4,25 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <link rel="stylesheet" href="../css/styles.css"></link>
   </head>
   <body>
-    <h1>Welcome 😊</h1>
-    <h3 id="username"></h3>
-    <a href="/login"> 로그인 </a>
-    <br />
-    <a href="/product"> 상품 </a>
-    <br />
-    <a href="/cart"> 장바구니 </a>
+    <div id="menuContainer">
+      <h1>Welcome 😊</h1>
+      <h3 id="username"></h3>
+      <nav>
+        <ul>
+          <li><a href="/login"> 로그인 </a></li>
+          <li><a href="/product"> 상품 </a></li>
+          <li><a href="/cart"> 장바구니 </a></li>
+        </ul>
+      </nav>
+    </div>
   </body>
   <script>
     fetch("/user")
       .then((res) => {
-        if (!res.ok) throw new Error("비로그인 상태입니다.");
+        if (res.json().err) throw new Error("비로그인 상태입니다.");
         return res.json();
       })
       .then((user) => {
