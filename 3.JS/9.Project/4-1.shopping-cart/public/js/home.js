@@ -5,13 +5,17 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
     login();
   });
+  document.getElementById("logout").addEventListener("click", (e) => {
+    e.preventDefault();
+    logout();
+  });
 });
 
+// 로그인 확인
 async function checkLoginStatus() {
   const response = await fetch("/api/check-login");
   if (response.status === 200) {
     const data = await response.json();
-    // console.log(data);
     showProfile(data.username);
   } else {
     const data = await response.json();
@@ -20,6 +24,7 @@ async function checkLoginStatus() {
   }
 }
 
+// 로그인
 async function login() {
   const username = document.getElementById("username").value;
   const password = document.getElementById("password").value;
@@ -42,13 +47,24 @@ async function login() {
   }
 }
 
+async function logout() {
+  const res = await fetch("/api/logout");
+  console.log("로그아웃 완료:: ", res.json());
+  showLoginForm();
+}
+
+// 유저 프로필
 function showProfile(username) {
   document.getElementById("usernameSpan").textContent = username;
   document.getElementById("profile").style.display = "block";
   document.getElementById("loginFormContainer").style.display = "none";
 }
 
+// 로그인 폼
 function showLoginForm() {
+  document.getElementById("username").value = "";
+  document.getElementById("password").value = "";
+
   document.getElementById("profile").style.display = "none";
   document.getElementById("loginFormContainer").style.display = "block";
 }
