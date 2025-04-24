@@ -5,9 +5,26 @@ const multer = require("multer");
 const PORT = 3000;
 const app = express();
 
-app.use(express.urlencoded());
+app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(express.static("public"));
+app.use("/uploads", express.static(path.join(__dirname, "public", "uploads")));
+
+const storage = multer.diskStorage({
+  // diskStorage : 파일을 저장하기 위한 제어 모드
+  // 저장 경로
+  destination: (req, file, cb) => {
+    // uploads 폴더에 저장
+    cb(null, path.join(__dirname, "public", "uploads"));
+  },
+  // 파일 이름 정보
+  filename: (req, file, cb) => {
+    const filename = Date.now() + path.extname(file.originalname);
+    cb(null, filename);
+  },
+});
+
+const upload = multer({ storage: storage });
 
 // GET index.html
 app.get("/", (req, res) => {
@@ -15,11 +32,13 @@ app.get("/", (req, res) => {
 });
 
 // POST /api/memo
-app.post("/api/memo", (req, res) => {
+app.post("/api/memo", upload.single("file"), (req, res) => {
   const { inputTitle, inputContent } = req.body;
-  console.log(`제목 : ${inputTitle}, 내용 : ${inputContent}`);
+  const file = req.file;
 
-  res.json({ inputTitle: inputTitle, inputContent: inputContent });
+  const fileUrl = file ? `/uploads/${file.filename}` : null;
+
+  res.json({ inputTitle, inputContent, imageUrl: fileUrl });
 });
 
 // PUT /api/memo

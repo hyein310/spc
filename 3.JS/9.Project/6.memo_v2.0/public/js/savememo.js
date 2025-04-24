@@ -6,14 +6,23 @@ document.addEventListener("DOMContentLoaded", () => {
 // --- 버튼 ---
 // 저장
 function saveBtn() {
-  document.getElementById("saveBtn").addEventListener("click", () => {
+  document.getElementById("saveBtn").addEventListener("click", async () => {
     const inputTitle = document.getElementById("input-title");
     const inputContent = document.getElementById("input-content");
+    const fileInput = document.getElementById("file-input");
+    const file = fileInput.files[0];
 
-    saveMemo(inputTitle.value, inputContent.value);
+    if (!inputTitle || !inputContent) {
+      alert("제목과 내용을 모두 입력하세요.");
+      return;
+    }
+
+    await saveMemo(inputTitle.value, inputContent.value, file);
+
     alert("저장되었습니다. 😊");
     inputTitle.value = "";
     inputContent.value = "";
+    fileInput.value = "";
   });
 }
 
@@ -51,32 +60,46 @@ function updateSaveBtn(updateBox, memoItem) {
 // --- 메모장 ---
 // 메모 저장 함수
 async function saveMemo(inputTitle, inputContent) {
+  const fileInput = document.getElementById("file-input");
+  const file = fileInput.files[0];
+
+  const formData = new FormData();
+  formData.append("inputTitle", inputTitle);
+  formData.append("inputContent", inputContent);
+  if (file) {
+    formData.append("file", file);
+  }
+
   const res = await fetch("/api/memo", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ inputTitle, inputContent }),
+    body: formData,
   });
 
   const memo = await res.json();
   console.log("제목: ", memo.inputTitle);
-  makeList(memo.inputTitle, memo.inputContent);
+  makeList(memo.inputTitle, memo.inputContent, memo.imageUrl);
 }
 
 // 메모장 리스트 추가 함수
-function makeList(inputTitle, inputContent) {
+function makeList(inputTitle, inputContent, imageUrl) {
   let memoId = 1;
   const memoBody = document.querySelector("#memo-list");
   const memo = document.createElement("div");
   memo.setAttribute("class", "memo-item");
   memo.setAttribute("data-id", `"${memoId}"`);
+
+  let imgEle = "";
+  if (imageUrl) {
+    imgEle = `<img src="${imageUrl}" class="memo-image mb-2" style="max-width: 40%; height: auto;" />`;
+  }
+
   memo.innerHTML = `
     <div class=memo-box>
-        <p class="memo-title">${inputTitle}</p>
-        <p class="memo-content">${inputContent}</p>
-        <button class="updateBtn btn btn-info">수정</button>
-        <button class="deleteBtn btn btn-warning">삭제</button>
+      ${imgEle}
+      <p class="memo-title">${inputTitle}</p>
+      <p class="memo-content">${inputContent}</p>
+      <button class="updateBtn btn btn-info">수정</button>
+      <button class="deleteBtn btn btn-warning">삭제</button>
     </div>
     `;
   memoBody.appendChild(memo);
@@ -147,4 +170,22 @@ async function updateSaveMemo(updateTitle, updateContent, memoItem) {
 async function deleteMemo(memoItem) {
   alert("삭제 성공 😊");
   memoItem.remove();
+}
+
+// 파일 선택
+function fileChoice() {
+  const fileInput = document.getElementById("file-input");
+  fileInput.addEventListener("change", (e) => {
+    const selectFile = e.target.files;
+    console.log("e:: ", e.target);
+    console.log("selectfile ::", selectFile);
+
+    if (selectFile.length > 0) {
+      for (const file of selectFile) {
+        console.log("파일 이름:", file.name);
+        console.log("파일 크기:", file.size);
+        console.log("파일 유형:", file.type);
+      }
+    }
+  });
 }
