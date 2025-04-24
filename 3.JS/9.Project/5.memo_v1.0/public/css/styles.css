@@ -1,0 +1,18 @@
+#input-container {
+  background-color: lightgray;
+  padding: 1rem;
+  padding-left: 2rem;
+}
+
+/* .input-group {
+  width: 100%;
+  border: 1px solid lightgrey;
+  border-radius: 5px;
+} */
+
+.memo-item {
+  padding: 1.5rem;
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
