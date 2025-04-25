@@ -50,10 +50,20 @@ function updateSaveBtn(updateBox, memoItem) {
   document.querySelector(".updateSaveBtn").addEventListener("click", () => {
     const updateTitle = updateBox.querySelector(".memo-update-title").value;
     const updateContent = updateBox.querySelector(".memo-update-content").value;
+    const updateImg = updateBox.querySelector(".update-img"); // input 타팁
+    const checkImgDelete = updateBox.querySelector(".img-delete");
 
-    console.log("수정 완료 버튼 누른 후 값 :: ", updateTitle);
+    console.log("업데이트 이미지 :: ", updateImg);
+    console.log("체크 박스 불러오기 : ", checkImgDelete);
+
     // 수정 사항 서버에 전달
-    updateSaveMemo(updateTitle, updateContent, memoItem);
+    updateSaveMemo(
+      updateTitle,
+      updateContent,
+      updateImg,
+      checkImgDelete,
+      memoItem
+    );
   });
 }
 
@@ -125,6 +135,8 @@ function updateMemo(memoItem) {
   updateBox.innerHTML = `
         <input type="text" class="memo-update-title" value="${inputTitle}" />
         <input type="text" class="memo-update-content" value="${inputContent}" />
+        <input type="file" class="update-img" accept=".jpg, .png" />
+        <input type="checkbox" class="img-delete" /> 이미지 삭제
         <button class="updateSaveBtn btn btn-primary">저장</button>
     `;
   memoItem.appendChild(updateBox);
@@ -134,14 +146,67 @@ function updateMemo(memoItem) {
 
 // 수정 사항 서버에 업데이트 요청
 // 일단 요청되지 않음.
-async function updateSaveMemo(updateTitle, updateContent, memoItem) {
+async function updateSaveMemo(
+  updateTitle,
+  updateContent,
+  updateImg,
+  checkbox,
+  memoItem
+) {
+  const prevImg = memoItem.querySelector(".memo-image"); // img 태그
+  let updateImgUrl = null;
+
+  console.log("이미지는 ? ", updateImg); // input type=file
+
+  // 만약 checkbox 속성이 checked 면 이미지 삭제 동작
+  // checkbox 속성이 unchecked이고, update를 하지 않았으면(수정하지 않았다. updateImg의 ) 이전 이미지(memoItem의 img) 그대로 전달,
+  // updateImg의 값이 존재한다면 변경한 값 전달
+
+  // updateImg값이 계속 null 만 출력됨.. 파일 선택해서 파일이 변경되었을 경우에, 이미지가 변경되어
+  // 그 이미지 주소가 서버로 넘어가도록 하고싶음. 만약 주소를 얻을 수 없다면.. 이름이라도..
+
+  console.log("pre:: ", prevImg);
+  const prevSrc = prevImg ? prevImg.src.split(":3000")[1] : null;
+  if (checkbox.checked) {
+    // if (prevImg) {
+    //   prevImg.remove();
+    // }
+    updateImgUrl = null;
+  } else {
+    const file = updateImg.files[0]; // 새로 선택된 파일
+
+    if (file) {
+      const formData = new FormData();
+      formData.append("file", file); // formData.append(key, vaule)
+
+      const uploadRes = await fetch("/api/memo", {
+        method: "POST",
+        body: formData,
+      });
+
+      const uploadData = await uploadRes.json();
+      updateImgUrl = uploadData.imageUrl;
+      console.log("new file: ", updateImgUrl);
+    } else {
+      updateImgUrl = prevSrc;
+    }
+  }
+
+  // console.log("수정 후 이미지는 ? ", updateImg);
+  // updateImgUrl = updateImg.src;
+  console.log("수정 후 이미지 주소: ", updateImgUrl);
   // PUT
   const res = await fetch("/api/memo", {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ updateTitle, updateContent }),
+    body: JSON.stringify({
+      updateTitle,
+      updateContent,
+      updateImgUrl,
+      prevImgUrl: prevSrc,
+    }),
   });
 
   // 해결해야 할 것
@@ -153,12 +218,26 @@ async function updateSaveMemo(updateTitle, updateContent, memoItem) {
   // memo-box의 요소 가져오기
   const titleElem = memoItem.querySelector(".memo-title");
   const contentElem = memoItem.querySelector(".memo-content");
+  // const imgElem = memoItem.querySelector(".memo-image");
   const updateBox = memoItem.querySelector(".updateBox");
   const memoBox = memoItem.querySelector(".memo-box");
 
   // memo-box의 value 내용 업데이트
   titleElem.innerText = memo.updateTitle;
   contentElem.innerText = memo.updateContent;
+
+  if (memo.updateImgUrl == null) {
+    prevImg.remove();
+  } else {
+    if (prevImg) {
+      prevImg.src = memo.updateImgUrl;
+    } else {
+      const newImg = document.createElement("img");
+      newImg.className = "memo-image";
+      newImg.src = memo.updateImgUrl;
+      memoBox.appendChild(newImg);
+    }
+  }
 
   // display 전환
   updateBox.remove(); // DOM에서 제거

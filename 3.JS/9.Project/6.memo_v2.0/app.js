@@ -1,6 +1,7 @@
 const express = require("express");
 const path = require("path");
 const multer = require("multer");
+const fs = require("fs");
 
 const PORT = 3000;
 const app = express();
@@ -19,7 +20,7 @@ const storage = multer.diskStorage({
   },
   // 파일 이름 정보
   filename: (req, file, cb) => {
-    const filename = Date.now() + path.extname(file.originalname);
+    const filename = Date.now() + path.extname(file.originalname); // path.extname() : 파일의 확장자명 반환
     cb(null, filename);
   },
 });
@@ -35,6 +36,7 @@ app.get("/", (req, res) => {
 app.post("/api/memo", upload.single("file"), (req, res) => {
   const { inputTitle, inputContent } = req.body;
   const file = req.file;
+  console.log("f: ", file);
 
   const fileUrl = file ? `/uploads/${file.filename}` : null;
 
@@ -43,12 +45,28 @@ app.post("/api/memo", upload.single("file"), (req, res) => {
 
 // PUT /api/memo
 app.put("/api/memo", (req, res) => {
-  const { updateTitle, updateContent } = req.body;
+  const { updateTitle, updateContent, updateImgUrl, prevImgUrl } = req.body;
+
   console.log(
-    `업데이트 제목 : ${updateTitle}, 업데이트 내용 : ${updateContent}`
+    `업데이트 제목 : ${updateTitle}, 업데이트 내용 : ${updateContent}, 업데이트 이미지 : ${updateImgUrl}, 예전 주소: ${prevImgUrl}`
   );
 
-  res.json({ updateTitle: updateTitle, updateContent: updateContent });
+  if (updateImgUrl == null && prevImgUrl) {
+    const imgPath = path.join(__dirname, "public", "uploads", prevImgUrl);
+    fs.unlink(imgPath, (err) => {
+      if (err) {
+        console.error("이미지 삭제 실패:", err);
+      } else {
+        console.log("이미지 삭제 성공:", imgPath);
+      }
+    });
+  }
+
+  res.json({
+    updateTitle: updateTitle,
+    updateContent: updateContent,
+    updateImgUrl: updateImgUrl,
+  });
 });
 
 // DELETE /api/memo
