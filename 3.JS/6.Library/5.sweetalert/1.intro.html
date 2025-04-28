@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>디자인 팝업</h1>
+    <button onclick="showAlert('success')">성공 열기</button>
+    <button onclick="showAlert('warning')">경고 열기</button>
+    <button onclick="showAlert('error')">에러 열기</button>
+    <button onclick="showAlert('info')">정보 열기</button>
+    <button onclick="showAlert('question')">질문 열기</button>
+    <script>
+      function showAlert(type) {
+        Swal.fire({
+          title: "데이터 로딩중..",
+          text: "로딩 완료!",
+          icon: type,
+        });
+      }
+    </script>
+  </body>
+</html>
