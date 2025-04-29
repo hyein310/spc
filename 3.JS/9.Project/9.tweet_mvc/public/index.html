@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- tailwindcss cdn -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss"></script>
+    <!-- <link rel="stylesheet" href="css/style.css" /> -->
+    <title>mini twitter 🐦‍⬛</title>
+  </head>
+  <body class="bg-gray-50">
+    <div id="container">
+      <nav>
+        <ul>
+          <li>
+            <a href="index.html">Home</a>
+          </li>
+          <li>
+            <a href="login.html">Login</a>
+          </li>
+          <li>
+            <a href="#" onclick="logout()">
+          </li>
+          <li>
+            <a href="profile.html">Profile</a>
+          </li>
+          <li>
+            <a href="tweet.html">Tweet</a>
+          </li>
+        </ul>
+      </nav>
+      <h1>Welcome to the Social Network 🌞</h1>
+      <div id="flash-msg" class="flash-msgs"></div>
+      <div id="tweets">
+        <!-- 여기에 twit 추가 -->
+      </div>
+    </div>
+    <script src="js/common.js"></script>
+    <script src="js/index.js"></script>
+  </body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/style.css" />
+    <title>mini twitter 🐦‍⬛</title>
+  </head>
+  <body>
+    <div id="container">
+      <nav>
+        <ul>
+          <li>
+            <a href="index.html">Home</a>
+          </li>
+          <li>
+            <a href="login.html">Login</a>
+          </li>
+          <li>
+            <a href="#" onclick="logout()">
+          </li>
+          <li>
+            <a href="profile.html">Profile</a>
+          </li>
+          <li>
+            <a href="tweet.html">Tweet</a>
+          </li>
+        </ul>
+      </nav>
+      <h1>Login 🌞</h1>
+      <div id="flash-msg" class="flash-msgs"></div>
+      <div class="login-form">
+        <form>
+          <input type="email" id="email" placeholder="email 입력하세요." />
+          <br />
+          <input
+            type="password"
+            id="password"
+            placeholder="password 입력하세요."
+          />
+          <br />
+        </form>
+        <button id="loginBtn">로그인</button>
+      </div>
+    </div>
+    <script src="js/common.js"></script>
+    <script src="js/login.js"></script>
+  </body>
+</html>

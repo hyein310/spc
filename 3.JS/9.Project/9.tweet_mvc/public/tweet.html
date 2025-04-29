@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/style.css" />
+    <title>mini twitter 🐦‍⬛</title>
+  </head>
+  <body>
+    <div id="container">
+      <nav>
+        <ul>
+          <li>
+            <a href="index.html">Home</a>
+          </li>
+          <li>
+            <a href="login.html">Login</a>
+          </li>
+          <li>
+            <a href="#" onclick="logout()">
+          </li>
+          <li>
+            <a href="profile.html">Profile</a>
+          </li>
+          <li>
+            <a href="tweet.html">Tweet</a>
+          </li>
+        </ul>
+      </nav>
+      <h1>tweet 🌞</h1>
+      <div id="tweet-form-box">
+        <div id="flash-msg" class="flash-msgs"></div>
+        <form action="">
+          <textarea
+            name="content"
+            id="content"
+            rows="2"
+            placeholder="내용을 입력하세요"
+          ></textarea>
+          <br />
+          <button type="submit" id="tweetBtn">트윗하기</button>
+        </form>
+        <!-- 여기에 twit 추가 -->
+        <div class="tweets"></div>
+        <script src="js/common.js"></script>
+        <script src="js/tweet.js"></script>
+      </div>
+    </div>
+  </body>
+</html>

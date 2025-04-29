@@ -1,0 +1,57 @@
+/* 상단 네비 바 디자인 */
+nav ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+nav ul li {
+  display: inline;
+  margin-right: 10px;
+}
+
+/* 메인 트윗 */
+.tweet {
+  border: 1px solid #ccc;
+  padding: 10px; /* 안쪽 공간 */
+  margin-bottom: 10px;
+}
+
+.tweet-body-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.tweet-author {
+  display: flex;
+  font-size: 0.9rem;
+  color: #ccc;
+  font-style: italic;
+  justify-content: space-between;
+}
+
+.tweet-action {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* 로그인 관련 */
+.flash-msgs {
+  list-style-type: none;
+  padding: 0;
+}
+
+.flash-msgs li {
+  padding: 10px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+}
+
+.flash-msgs li.success {
+  background-color: #a0ffae;
+  color: #176122;
+}
+
+.flash-msgs li.danger {
+  background-color: #ffa0a0;
+  color: #611717;
+}

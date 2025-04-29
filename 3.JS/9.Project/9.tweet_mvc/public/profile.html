@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/style.css" />
+    <title>mini twitter 🐦‍⬛</title>
+  </head>
+  <body>
+    <div id="container">
+      <nav>
+        <ul>
+          <li>
+            <a href="index.html">Home</a>
+          </li>
+          <li>
+            <a href="login.html">Login</a>
+          </li>
+          <li>
+            <a href="#" onclick="logout()">Logout</a>
+          </li>
+          <li>
+            <a href="profile.html">Profile</a>
+          </li>
+          <li>
+            <a href="tweet.html">Tweet</a>
+          </li>
+        </ul>
+      </nav>
+      <h1>Profile 🌞</h1>
+      <div id="flash-msg" class="flash-msgs"></div>
+      <div id="profile-form">
+        <form>
+          <label>사용자명</label>
+          <input type="text" id="profile-username" placeholder="username" />
+          <label>이메일</label>
+          <input type="email" id="profile-email" placeholder="email" />
+          <br />
+        </form>
+      </div>
+    </div>
+    <script src="js/common.js"></script>
+  </body>
+</html>
