@@ -7,7 +7,7 @@ const chatbotView = document.getElementById("chatbotView");
 const chatbotMessages = document.getElementById("chatbotMessages");
 const userMessages = document.getElementById("userMessages");
 
-const API_SERVER = "http://127.0.0.1:5000";
+const API_SERVER = "http://127.0.0.1:3000";
 // send 버튼을 통해서 백엔드로 입력한 대화 내용 전송
 //  받아온 응답을 대화창에 출력
 

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chat Application</title>
+    <style>
+      /* Existing styles here */
+
+      body {
+        background-color: #f0f0f0;
+        font-family: Arial, sans-serif;
+      }
+
+      input[type="text"] {
+        border: 1px solid #ccc;
+        padding: 10px;
+        width: 300px;
+        border-radius: 4px;
+      }
+
+      /* New styles to improve form appearance */
+      input[type="text"]::placeholder {
+        color: #aaa;
+      }
+
+      #chatContainer {
+        display: flex;
+        margin: auto;
+        height: 50%;
+        text-align: center;
+        flex-direction: column;
+      }
+
+      button {
+        background-color: #4caf50; /* Green */
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 4px;
+      }
+
+      /* Enhance responsiveness */
+      @media (max-width: 600px) {
+        input[type="text"] {
+          width: 100%;
+        }
+
+        #chatContainer {
+          width: 90%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="chat-container">
+      <div id="chat-header">Chat Room</div>
+      <div id="chatContainer">
+        <!-- 이곳에 채팅이 올 예정 -->
+      </div>
+      <div id="chat-messages"></div>
+      <input
+        type="text"
+        id="questionInput"
+        placeholder="질문을 입력하세요."
+        required
+      />
+      <button type="button" id="sendBtn">Send</button>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>

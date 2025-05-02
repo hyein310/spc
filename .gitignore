@@ -15,4 +15,5 @@ secret.txt
 *.sqlite
 *.sqlite3
 
+
 uploads/
