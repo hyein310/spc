@@ -1,30 +1,22 @@
 const express = require("express");
 const path = require("path");
-require("dotenv").config({ path: "../../.env" });
 const axios = require("axios");
-const Database = require("better-sqlite3");
+require("dotenv").config({ path: "../../../.env" });
+const openAiKey = process.env.OPEN_AI_KEY;
 
 // console.log(process.env.OPENAI_API_KEY);
 const app = express();
 const port = 3000;
 
-// const conversationHistory = []; // DB 로 대체....
-// SQLite DB 설정
-// const db = new Database(':memory:'); // 파일에 저장하지 않고, 메모리에 임시 저장하는 DB
-const db = new Database("history2.db"); // 파일에 저장하기
-
-db.exec(`
-    CREATE TABLE IF NOT EXISTS session (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        start_time DATETIME DEFAULT CURRENT_TIMESTAMP
-    );
-
-    CREATE TABLE IF NOT EXISTS conversation (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        session_id INTEGER,
-        role TEXT,
-        content TEXT)
-`);
+const {
+  getRecentConversation,
+  newSession,
+  getAllSessions,
+  getCurrentSession,
+  getConversationBySession,
+  saveMessage,
+  getSessionById,
+} = require("./database3");
 
 // Basic route
 app.get("/", (req, res) => {
@@ -35,14 +27,6 @@ app.get("/", (req, res) => {
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
 
-function getRecentConversation() {
-  const stmt = db.prepare(
-    "SELECT * FROM conversation ORDER BY id DESC LIMIT 10"
-  ); // 최근 10개의 대화를 가져옴
-  const rows = stmt.all();
-  return rows.reverse(); // 최근 10개 가져와서, 오래된 질문을 먼저 넣기 위해서 순서 바꿈...
-}
-
 // 새로운 세션 생성 - API 네이밍은 좋은 스타일은 아님.. 그냥 이해를 돕기 위해서...
 app.post("/api/new-session", (req, res) => {
   const result = db.prepare("INSERT INTO session DEFAULT VALUES").run();
@@ -51,33 +35,9 @@ app.post("/api/new-session", (req, res) => {
 
 // 전체 세션 목록 조회
 app.get("/api/all-sessions", (req, res) => {
-  const sessions = db
-    .prepare("SELECT id, start_time FROM session ORDER BY start_time DESC")
-    .all();
+  const sessions = getAllSessions();
   res.json({ allSessions: sessions });
 });
-
-function getCurrentSession() {
-  const session = db
-    .prepare(
-      "SELECT id, start_time FROM session ORDER BY start_time DESC LIMIT 1"
-    )
-    .get();
-  if (!session) {
-    // 최근 대화가 없으면?? 새로 만들기...
-    const insert = db.prepare("INSERT INTO session DEFAULT VALUES").run();
-    return db
-      .prepare("SELECT id, start_time FROM session WHERE id=?")
-      .get(insert.lastInsertRowid);
-  }
-  return session;
-}
-
-function getConversationBySession(sessionId) {
-  return db
-    .prepare("SELECT * FROM conversation WHERE session_id=? ORDER BY id")
-    .all(sessionId);
-}
 
 // 최근 세션의 대화 내용 다 가져오기
 app.get("/api/current-session", (req, res) => {
@@ -91,22 +51,29 @@ app.get("/api/current-session", (req, res) => {
 });
 
 // 특정 세션 대화 내용 가져오기
-app.get("/api/session/:sessionId", (req, res) => {});
+app.get("/api/session/:sessionId", (req, res) => {
+  const sessionId = req.params.sessionId;
+  const session = getSessionById(sessionId);
+  const history = getConversationBySession(sessionId);
+
+  res.json({
+    id: session.id,
+    start_time: session.start_time,
+    conversationHistory: history,
+  });
+});
 
 // system: 시스템 프롬푸트
 // user: 사용자 질문
 // assistant: 챗봇 응답
 app.post("/api/chat", async (req, res) => {
-  const { userInput } = req.body;
-  console.log("userInput: ", userInput);
+  const { sessionId, userInput } = req.body;
+  console.log("userInput: ", userInput, "sessionId: ", sessionId);
   // 이전 대화 내용에 추가
   // conversationHistory.push({role:'user', content: userInput}) // DB에 쿼리문 INSERT
-  db.prepare("INSERT INTO conversation (role, content) VALUES (?,?)").run(
-    "user",
-    userInput
-  );
 
   const previousConversation = getRecentConversation();
+  saveMessage("user", userInput, 1);
 
   const chatGPTResponse = await getChatGPTResponse(previousConversation);
   console.log(chatGPTResponse);
@@ -114,10 +81,8 @@ app.post("/api/chat", async (req, res) => {
   console.log("보낼전체대화내용:", previousConversation);
   console.log("-----");
   // conversationHistory.push({role:'assistant', content: chatGPTResponse})
-  db.prepare("INSERT INTO conversation (role, content) VALUES (?,?)").run(
-    "assistant",
-    chatGPTResponse
-  );
+
+  saveMessage("assistant", chatGPTResponse, 1);
 
   res.json({ message: chatGPTResponse });
 });
@@ -145,7 +110,7 @@ async function getChatGPTResponse(previousConversation) {
     {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+        Authorization: `Bearer ${openAiKey}`,
       },
     }
   );
