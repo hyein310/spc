@@ -8,8 +8,7 @@ const query = `
         completed INTEGER DEFAULT 0
     )
 `;
+
 db.prepare(query).run();
 
-module.exports = {
-  db,
-};
+module.exports = db;
