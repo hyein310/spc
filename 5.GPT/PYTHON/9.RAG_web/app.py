@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify, send_from_directory
 import os
 
-from database import create_vector_db, answer_question
+from database import (create_vector_db, answer_question, initialize_vector, list_files, delete_files)
 
 DATA_DIR = "./DATA"
 
@@ -13,6 +13,17 @@ app = Flask(__name__)
 @app.route("/")
 def index():
     return send_from_directory('static', 'index.html')
+
+@app.route("/files")
+def all_files():
+    files = list_files()
+    print(files)
+    return jsonify({"files": files})
+
+@app.route("/files/<filename>", methods=['POST'])
+def remove_file(filename):
+    delete_files(filename)
+    return jsonify({"message": f"{filename} 삭제 완료"})
 
 @app.route("/upload", methods=['POST'])
 def upload_file():

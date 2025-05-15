@@ -1,5 +1,6 @@
 # 미션. 랭체인 라이브러리 왕창~
 import os
+import json
 from dotenv import load_dotenv
 
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
@@ -16,8 +17,11 @@ load_dotenv()
 PERSIST_DIR = "./chroma_db"
 COLLECTION_NAME = "my-data"
 store = None
+DATA_DIR = "./DATA"
+PROMPT_FILE = "./prompt.json"
 
 # 프롬푸트 코드
+
 prompt = ChatPromptTemplate.from_template("""
 당신은 문서 기반으로 사용자의 질문에 답변하는 챗봇입니다.
 다음 문서를 참고해서 사용자의 질문에 답하시오.
@@ -31,6 +35,28 @@ prompt = ChatPromptTemplate.from_template("""
 답변:
 """)
 
+def list_files():
+    files = [f for f in os.listdir(DATA_DIR)
+             if os.path.isfile(os.path.join(DATA_DIR, f))]
+    print(files)
+    return files
+
+def delete_files(file_path):
+    # 1. DB에서 파일 삭제
+    # 컬렉션 내에서 해당 파일을 파싱하면서 생긴 데이터를 지워야하는데
+    # metadat에 파일명이 잘 저장 되어있음 (metadat.source)
+    result = store._collection.get(where={"documnet":file_path})
+    docs = result.get("documnet", [])
+    print("존재하는 문서 수: ", len(docs))
+
+    store._collection.delete(where={"documnet":file_path})
+
+    # 2. 파일 자체를 삭제
+    path = os.path.join(DATA_DIR, file_path)
+    if os.path.exists(path):
+        os.remove(path)
+
+
 # LLM 설정
 llm = ChatOpenAI(model='gpt-4o-mini')
 
@@ -41,6 +67,10 @@ def create_vector_db(file_path):
     
     loader = PyPDFLoader(file_path)
     documents = loader.load()
+
+    # 우리의 메타데이터 주소
+    
+
 
     print(f"총페이지수: ", len(documents))
 
