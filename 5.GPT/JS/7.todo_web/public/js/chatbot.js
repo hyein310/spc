@@ -1,85 +1,97 @@
-const todoList = document.getElementById("todo-list");
-const input = document.getElementById("new-todo");
-const addBtn = document.getElementById("add-todo");
+// 미션1-1. 저 영역을 클리해서 창이 나오게 한다.
+// 미션1-2. X박스를 눌러서 다시 창이 닫히게 한다.
 
-// 버튼 클릭 시 추가 호출
-addBtn.addEventListener("click", async () => {
-  renderTodos();
+// 미션3. Send 버튼을 통해서... 백엔드로 사용자가 입력한 대화 내용을 전송한다.
+// 미션3-2. 엔터로도 입력되게...
+// 미션4. 받아온 응답(에코 메세지)을 대화창에 출력한다.
+// 미션4-2. 내가 입력한 메세지도 대화창에 출력하기... (가 있는게, 더 채팅창이 보기가 좋음)
 
-  // 입력값 읽어다가 백엔드 호출 (/api/todos) POST
-  const newTodo = input.value;
-  console.log("추가 투두", newTodo);
+const API_SERVER = "http://127.0.0.1:3000";
 
-  const res = await fetch("/api/todos", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ newTodo }),
-  });
-
-  const data = await res.json();
-  console.log(data);
-
-  const addTodo = document.createElement("li");
-  addTodo.textContent = data.todo;
-  todoList.appendChild(addTodo);
-});
-
-// 화면에 투두 리스트 가져와서 뿌리기 (렌더링)
-async function renderTodos(todos) {
-  // 백엔드에서 받아오기 (/api/todos) GET
-  const res = await fetch("/api/todos");
-  const data = await res.json();
-  console.log("get요청: ", data);
-
-  todoList.innerHTML = "";
-  data.forEach((todo) => {
-    const li = document.createElement("li");
-    li.textContent = todo.text;
-
-    const delBtn = document.createElement("button");
-    delBtn.textContent = "삭제";
-    delBtn.className = "deleteBtn";
-
-    li.appendChild(delBtn);
-    todoList.appendChild(li);
-
-    // 삭제
-    delBtn.addEventListener("click", async () => {
-      try {
-        console.log("todo id:: ", todo.id);
-        const res = await fetch(`/api/todos/${todo.id}`, {
-          method: "DELETE",
-        });
-        const result = await res.json();
-        console.log("삭제 결과:", result);
-
-        if (result) {
-          li.remove();
-        }
-      } catch (err) {
-        console.error("삭제 실패:", err);
-      }
-
-      li.addEventListener("toggle", async () => {
-        try {
-          console.log("todo id:: ", todo.id);
-          const res = await fetch(`/api/todos/${todo.id}`, {
-            method: "PUT",
-          });
-          const result = await res.json();
-          console.log("토글 결과:", result);
-
-          if (result) {
-          }
-        } catch (err) {
-          console.error("삭제 실패:", err);
-        }
-      });
-
-      renderTodos();
-    });
-  });
+function createChatbotUI() {
+  const chatbotHTML = `
+    <div class="chatbot-icon" id="chatbotIcon">
+        <!-- 아이콘 -->
+        <i class="bi bi-chat-dots"></i>
+        <!-- <i class="bi bi-snapchat"></i> -->
+        <!-- <i class="bi bi-telegram"></i> -->
+    </div>
+    <div class="chatbot-window" id="chatbotWindow">
+        <!-- 창 -->
+        <div class="chatbot-header">
+            <span>Chatbot</span>
+            <button id="closeChatbot">X</button>
+        </div>
+        <div class="chatbot-body">
+            <div class="chatbot-messages" id="chatbotMessage"></div>
+            <div class="chatbot-input-container">
+                <input type="text" id="chatbotInput" placeholder="메세지를 입력하시오.">
+                <button id="sendMessage">Send</button>
+            </div>
+        </div>
+    </div>
+    `;
+  document.body.insertAdjacentHTML("beforeend", chatbotHTML);
 }
-renderTodos();
+
+document.addEventListener("DOMContentLoaded", () => {
+  createChatbotUI();
+
+  const chatbotIcon = document.getElementById("chatbotIcon");
+  const chatbotWindow = document.getElementById("chatbotWindow");
+  const closeChatbot = document.getElementById("closeChatbot");
+  const sendMessage = document.getElementById("sendMessage");
+  const chatbotInput = document.getElementById("chatbotInput");
+  const chatbotMessages = document.getElementById("chatbotMessage");
+
+  chatbotIcon.addEventListener("click", () => {
+    chatbotIcon.style.display = "none";
+    chatbotWindow.style.display = "flex";
+  });
+
+  closeChatbot.addEventListener("click", () => {
+    chatbotIcon.style.display = "flex";
+    chatbotWindow.style.display = "none";
+  });
+
+  sendMessage.addEventListener("click", () => {
+    getInputFromYourSendMessage();
+  });
+
+  chatbotInput.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+      // console.log('엔터키눌렸으니, 서버로 보내는 코드 짜기 TODO');
+      getInputFromYourSendMessage();
+    }
+  });
+
+  function addMessage(message, sender = "user") {
+    // 화면에 내 메세지 추가한다.
+    const myMessage = document.createElement("div");
+    myMessage.innerHTML = sender + ": " + message;
+    chatbotMessages.appendChild(myMessage);
+
+    // 스크롤 내린다.
+    chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+  }
+
+  // 그래서.... 이 아래 함수를 잘게 나누기.... TODO
+  async function getInputFromYourSendMessage() {
+    const question = chatbotInput.value;
+
+    // 메세지 지우기
+    chatbotInput.value = "";
+    addMessage(question, "user");
+
+    // 서버로 보낸다
+    const resp = await fetch(`${API_SERVER}/api/chat`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ question }),
+    });
+
+    const result = await resp.json();
+
+    addMessage(result.answer, "chatbot");
+  }
+});

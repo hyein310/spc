@@ -1,23 +1,27 @@
 const express = require("express");
 const morgan = require("morgan");
 const path = require("path");
-const todoRoute = require("./routes/todoRoute")
+const cors = require("cors");
+const todoRoutes = require("./routes/todoRoute");
+const chatbot = require("./routes/chatbotRoute");
 
 const app = express();
-const PORT = 3000;
+const port = 3000;
 
+// 미들웨어
 app.use(express.json());
 app.use(morgan("dev"));
-app.use(express.static("public"));
+app.use(express.static(path.join(__dirname, "public")));
+app.use(cors());
 
 app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'))
+  res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
-// Route
-app.use(todoRoute);
+// 라우터 연결
+app.use(todoRoutes);
+app.use(chatbot);
 
-app.listen(PORT, () => {
-  console.log("server is open!");
-  console.log(`http://localhost:${PORT}`);
+app.listen(port, () => {
+  console.log(`Server is running on http://localhost:${port}`);
 });
