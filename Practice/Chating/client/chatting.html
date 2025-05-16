@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+      .container {
+        background-color: #9bbbd4;
+        height: 500px;
+        margin-top: 20px;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* [HEADER] */
+      .container header {
+        width: 100%;
+        box-shadow: 0px 2px 2px #7a7a7a20;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-basis: 10%;
+      }
+
+      /* [SECTION] */
+      .container section {
+        padding: 16px;
+        overflow-y: auto;
+        flex-basis: 80%;
+      }
+      /* 스크롤 모양 변경 */
+      .container section::-webkit-scrollbar {
+        width: 4px;
+      }
+      .container section::-webkit-scrollbar-thumb {
+        background-color: #888;
+        border-radius: 10px;
+        padding: 1px;
+        margin: 1px;
+      }
+      .container section::-webkit-scrollbar-track {
+        padding: 1px;
+        background-color: #ccc;
+        border-radius: 10px;
+        box-shadow: inset 0px 0px 2px white;
+      }
+
+      .container .speech .msg-box {
+        display: inline-block;
+        box-shadow: 1px 1px 5px #7a7a7a;
+        border-radius: 8px;
+        padding: 0.3rem;
+        margin: 0.5rem 0;
+        max-width: 60%;
+      }
+
+      .container .speech.me {
+        text-align: right;
+      }
+
+      .container .speech.other {
+        position: relative;
+        margin: 10px 0;
+      }
+      .container .speech.other .nickname {
+        font-size: 10px;
+        position: absolute;
+        top: -8px;
+      }
+
+      .container .speech.me .msg-box {
+        background-color: #fef01b;
+      }
+      .container .speech.other .msg-box {
+        background-color: #ffffff;
+      }
+      /* [MSG_FORM] */
+      .container .msg-form {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 16px;
+        flex-basis: 10%;
+      }
+
+      .container .msg-form input {
+        flex-basis: 75%;
+        border: none;
+        outline: none;
+        border-radius: 100px;
+        padding: 8px 16px;
+      }
+      .container .msg-form input:focus + button {
+        background-color: #fef01b;
+      }
+
+      .container .msg-form button {
+        flex-basis: 12%;
+        border: none;
+        border-radius: 3px;
+      }
+
+      /* DM-select 추가 */
+      .container .msg-form #dm-select {
+        flex-basis: 12%;
+        border: none;
+        outline: none;
+        text-align: center;
+        border-radius: 3px;
+      }
+
+      /* dm css */
+      .container .speech.other.dm .msg-box {
+        background-color: #fff5;
+      }
+
+      /* 입장알림 CSS */
+      .container section .notice {
+        width: 80%;
+        background-color: #fff5;
+        border-radius: 50px;
+        text-align: center;
+        padding: 2px;
+        color: #4449;
+        margin: 8px auto;
+        font-size: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 닉네임 입력창, 채팅방 입장 버튼 추가 -->
+    <div class="entry-box">
+      <input type="text" placeholder="닉네임 입력" id="nickname" />
+      <button onclick="join()">채팅방 입장하기</button>
+    </div>
+    <div class="container d-none">
+      <header>Chat</header>
+      <section></section>
+      <form class="msg-form" id="msg-form">
+        <select id="dm-select"></select>
+        <input type="text" placeholder="메세지 입력" />
+        <button>전송</button>
+      </form>
+    </div>
+    <script>
+      const socket = io();
+      const chatContainer = document.querySelector(".container section");
+      const chatForm = document.querySelector("#msg-form");
+      const nicknameInput = document.querySelector("#nickname");
+      const container = document.querySelector(".container");
+      const select = document.querySelector("#dm-select");
+
+      // 현재 내 닉네임 객체
+      let myNick;
+
+      // 닉네임 사용해서 채팅 방 입장하기
+      // [닉네임 사용1]: 닉네임 서버에 보내서 중복된 닉네임인지 체크
+      function join() {
+        socket.emit("checkNick", nicknameInput.value);
+      }
+
+      // [닉네임 사용3]
+      // (1) 닉네임 중복으로 입장 실패
+      socket.on("error", (errMsg) => {
+        alert(errMsg);
+      });
+
+      // (2) 입장 성공, 내 닉네임 정보 저장
+      // 보여지는 화면 변경 (채팅창 보이게, 닉네임 작성란 비활성화)
+      socket.on("entrySuccess", (mynick) => {
+        myNick = mynick;
+        nicknameInput.disabled = true; // 입장했을 경우에는 위에 input창 변경 불가능하게 설정
+        document
+          .querySelector(".entry-box > button") // 입장하기 버튼도 사라지게 함
+          .classList.add("d-none");
+        container.classList.remove("d-none"); // 입장 전에 채팅창이 보이지 않게 해놨으나 그 설정 제거함으로써 채팅창 보임
+      });
+
+      // (3) 입장 성공, 기존 코드 변경 없음
+      // [닉네임]이 입장하셨습니다.
+      socket.on("notice", (noticeMsg) => {
+        console.log(noticeMsg);
+        const div = document.createElement("div");
+        div.textContent = noticeMsg;
+        div.classList.add("notice"); // 입장 알림 css를 위해서 클래스명 추가
+        chatContainer.append(div);
+      });
+
+      // (4) select box의 option을 닉네임 정보로 채우기
+      socket.on("updateNicks", (nickInfo) => {
+        // nickInfo ex) { ksPal4TJg7CA8IhNAAAF: 'aa' }
+        console.log("option 추가::");
+        let options = `<option value="all">전체</option>`;
+
+        // 클라이언트 입장 시, 옵션에 값 추가
+        for (let key in nickInfo) {
+          console.log("for in: ", key); // socket.id의 값
+          console.log("value: ", nickInfo[key]); // 입장 시 입력한 닉네임 값
+          let option = `<option value=${key}>${nickInfo[key]}</option>`;
+          if (nickInfo[key] !== myNick) options += option; // option에서 나 자신 제외
+        }
+        console.log(options);
+        select.innerHTML = options;
+      });
+
+      /* 채팅 주고받기 */
+      chatForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const input = chatForm.querySelector("input");
+        if (input.value.trim() === "") return;
+
+        // [4-1] 폼이 제출되었을 때 메세지를 서버로 전달
+        // [변경] 메세지 문자열 -> dm 정보가 포함된 데이터
+        const sendData = {
+          myNick,
+          dm: select.value, // '특정 socket id' or 'all' (즉, option에서 선택된 값)
+          msg: input.value,
+        };
+        // socket.emit("send", input.value);
+        socket.emit("send", sendData);
+        input.value = "";
+      });
+
+      // [4-3] 모든 메세지를 전달받고
+      // 나와 다른 사람의 메세지를 구분
+      socket.on("message", (msgInfo) => {
+        console.log("보낸사람의 id", msgInfo.id);
+        console.log("내 id", socket.id);
+        console.log("보낸 메세지", msgInfo.message);
+
+        const div = document.createElement("div");
+        const span = document.createElement("span"); //내용에 대한
+        span.classList.add("msg-box");
+        // span.textContent = msgInfo.message; //메세지 넣기
+
+        if (msgInfo.isDm) {
+          // 특정 id dm
+          span.textContent = "[귓]" + msgInfo.message;
+        } else {
+          // undefined
+          // 전체 보내기
+          span.textContent = msgInfo.message; //메세지 넣기
+        }
+
+        if (myNick === msgInfo.id) {
+          // 내가 보낸 메세지
+          div.classList.add("speech", "me");
+        } else {
+          // 남이 보낸 메세지
+          if (msgInfo.isDm) {
+            div.classList.add("dm");
+          }
+          div.classList.add("speech", "other");
+          const nickname = document.createElement("span"); // 닉네임에 대한
+          nickname.classList.add("nickname");
+          nickname.textContent = msgInfo.id;
+          div.prepend(nickname); // 메세지 위에 메세지를 보낸 사람의 닉네임 표시
+        }
+        div.append(span); // 메세지 내용
+        chatContainer.append(div);
+        // section이 길어지면 스크롤 맨 밑으로
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+      });
+    </script>
+  </body>
+</html>
