@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>상품 후기 작성</title>
+    <style>
+      .review-form {
+        width: 500px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .form-group {
+        margin-bottom: 15px;
+      }
+      label {
+        display: block;
+        margin-bottom: 5px;
+      }
+      textarea {
+        width: 100%;
+        height: 150px;
+      }
+      .rating {
+        margin-bottom: 10px;
+        display: flex;
+        flex-direction: column;
+      }
+      .rating label {
+        margin: 5px 0;
+      }
+      .product-image {
+        width: 100%;
+        height: 300px;
+        margin-bottom: 20px;
+        object-fit: cover;
+      }
+      .ai-summary {
+        background: #f5f5f5;
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+      }
+      .review-card {
+        background: white;
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      .review-card .rating {
+        color: #ffd700;
+        font-size: 1.2em;
+        margin-bottom: 10px;
+      }
+      .review-card .review-text {
+        margin: 10px 0;
+        line-height: 1.5;
+      }
+      .review-card .review-date {
+        color: #666;
+        font-size: 0.9em;
+      }
+      .review-list {
+        margin-top: 30px;
+        padding: 20px;
+        background: #f5f5f5;
+        border-radius: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="review-form">
+      <h2>상품 후기 작성</h2>
+      <div class="ai-summary">
+        <h3>AI 리뷰 요약</h3>
+        <p>
+          이 상품에 대한 전반적인 평가는 긍정적입니다. 사용자들은 특히 품질과
+          가성비를 높게 평가했습니다.
+        </p>
+      </div>
+      <img
+        src="https://picsum.photos/500/300"
+        alt="Random Product Image"
+        class="product-image"
+      />
+      <form id="reviewForm">
+        <div class="form-group">
+          <label>평점</label>
+          <div class="rating">
+            <label
+              ><input type="radio" name="rating" value="5" /> ⭐⭐⭐⭐⭐
+              5점</label
+            >
+            <label
+              ><input type="radio" name="rating" value="4" /> ⭐⭐⭐⭐
+              4점</label
+            >
+            <label
+              ><input type="radio" name="rating" value="3" /> ⭐⭐⭐ 3점</label
+            >
+            <label
+              ><input type="radio" name="rating" value="2" /> ⭐⭐ 2점</label
+            >
+            <label><input type="radio" name="rating" value="1" /> ⭐ 1점</label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>후기 내용</label>
+          <textarea name="review" required></textarea>
+        </div>
+        <button type="submit">후기 등록</button>
+      </form>
+      <div class="review-list" id="reviewList">
+        <h3>작성된 후기</h3>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", async () => {
+        try {
+          const response = await fetch("/api/reviewList");
+          const html = await response.text();
+          document.getElementById("reviewList").innerHTML += html;
+        } catch (error) {
+          console.error("Error loading reviews:", error);
+        }
+      });
+
+      document
+        .getElementById("reviewForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          const rating = document.querySelector(
+            'input[name="rating"]:checked'
+          ).value;
+          const review = document.querySelector(
+            'textarea[name="review"]'
+          ).value;
+
+          try {
+            const response = await fetch("/api/review", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                rating: rating,
+                review: review,
+              }),
+            });
+
+            if (response.ok) {
+              const reviewsResponse = await fetch("/api/reviewList");
+              const html = await reviewsResponse.text();
+              document.getElementById("reviewList").innerHTML =
+                "<h3>작성된 후기</h3>" + html;
+              alert("후기가 성공적으로 등록되었습니다.");
+              document.getElementById("reviewForm").reset();
+            } else {
+              alert("후기 등록에 실패했습니다.");
+            }
+          } catch (error) {
+            console.error("Error:", error);
+            alert("후기 등록 중 오류가 발생했습니다.");
+          }
+        });
+    </script>
+  </body>
+</html>
