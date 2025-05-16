@@ -1,78 +1,128 @@
-from flask import Flask, request, jsonify
-import sqlite3
+from flask import Flask, render_template, request, jsonify
 from openai import OpenAI
 from dotenv import load_dotenv
-from datetime import datetime
 import os
+import sqlite3
+from datetime import datetime
 
 load_dotenv()
 
-app = Flask(__name__, static_folder='public', static_url_path='')
-
+app = Flask(__name__)
 client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
 
-@app.route('/')
-def home():
-    return app.send_static_file('index.html')
-
-@app.route("/api/review", methods=['POST'])
-def submit_rating():
-    data = request.json
-    rating = data.get('rating')
-    review = data.get('review')
-    created_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-
+def init_db():
     conn = sqlite3.connect('reviews.db')
     c = conn.cursor()
-
-    c.execute('''CREATE TABLE IF NOT EXISTS reviews
-                 (rating INTEGER, review TEXT, created_at TEXT)''')
-
-    c.execute("INSERT INTO reviews (rating, review, created_at) VALUES (?, ?, ?)",
-              (rating, review, created_at))
-
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS reviews (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            rating INTEGER NOT NULL,
+            review TEXT NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    ''')
     conn.commit()
     conn.close()
 
-    print("리뷰 :: ", review)
+init_db()
 
-    return jsonify({
-        "message": "Review submitted successfully",
-        "rating": rating,
-        "review": review,
-        "created_at": created_at
-    }), 200
+@app.route('/')
+def index():
+    return render_template('index.html')
 
-@app.route("/api/reviewList", methods=['GET'])
+@app.route('/hello')
+def hello():
+    return 'Hello, World!'
+
+@app.route('/api/review', methods=['GET'])
 def get_reviews():
     conn = sqlite3.connect('reviews.db')
     c = conn.cursor()
-
-    c.execute("SELECT rating, review, created_at FROM reviews ORDER BY created_at DESC")
+    c.execute('SELECT id, rating, review, created_at FROM reviews ORDER BY created_at DESC')
     reviews = c.fetchall()
-
     conn.close()
 
-    review_list = []
-    for review in reviews:
-        review_dict = {
-            'rating': review[0],
-            'review': review[1],
-            'created_at': review[2]
+    reviews_list = [
+        {
+            "id": review[0],
+            'rating': review[1],
+            'review': review[2],
+            'created_at': review[3]
         }
-        review_list.append(review_dict)
+        for review in reviews
+    ]
 
-    html_content = ""
-    for review in review_list:
-        html_content += f"""
-        <div class="review-card">
-            <div class="rating">평점: {'★' * review['rating']}</div>
-            <div class="review-text">{review['review']}</div>
-            <div class="review-date">{review['created_at']}</div>
-        </div>
-        """
+    return jsonify(reviews_list)
 
-    return html_content
+@app.route('/api/review', methods=['POST'])
+def add_review():
+    data = request.get_json()
+    rating = data.get('rating')
+    review = data.get('review')
+
+    if not rating or not review:
+        return jsonify({'error': 'Rating and review are required'}), 400
+
+    conn = sqlite3.connect('reviews.db')
+    c = conn.cursor()
+    c.execute('INSERT INTO reviews (rating, review) VALUES (?, ?)', (rating, review))
+    conn.commit()
+    conn.close()
+
+    return jsonify({'message': 'Review added successfully'}), 201
+
+@app.route('/api/review/<int:review_id>', methods=['DELETE'])
+def delete_review(review_id):
+    conn = sqlite3.connect('reviews.db')
+    c = conn.cursor()
+    c.execute('DELETE FROM reviews WHERE id = ?', (review_id,))
+
+    if c.rowcount == 0:
+        conn.close()
+        return jsonify({'error': 'Review not found'}), 404
+
+    conn.commit()
+    conn.close()
+    return jsonify({'message': 'Review deleted successfully'}), 200
+
+@app.route('/api/summary', methods=['GET'])
+def get_ai_summary():
+    language = request.args.get('lang', 'ko')
+
+    language_prompts = {
+        'ko': '당신은 고객 리뷰를 요약해주는 도우미입니다. 한국어로 답변해주세요.',
+        'en': 'You are a customer review summary assistant. Please respond in English.',
+        'ja': 'あなたは顧客レビューを要約するアシスタントです。日本語で回答してください。',
+        'fr': 'Vous êtes un assistant de résumé des avis clients. Veuillez répondre en français.',
+        'it': 'Sei un assistente per il riepilogo delle recensioni dei clienti. Per favore rispondi in italiano.'
+    }
+
+    conn = sqlite3.connect('reviews.db')
+    c = conn.cursor()
+    c.execute('SELECT rating, review FROM reviews')
+    reviews = c.fetchall()
+    conn.close()
+
+    if not reviews:
+        return jsonify({'error': 'No reviews found'}), 404
+
+    reviews_text = "\n".join([f"Rating: {r[0]}, Review: {r[1]}" for r in reviews])
+
+    response = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": language_prompts.get(language, language_prompts['ko'])},
+            {"role": "user", "content": f"다음 리뷰들을 다 읽고 전체적으로 요약한 문장으로 만들어주세요:\n{reviews_text}"}
+        ]
+    )
+
+    summary = response.choices[0].message.content
+
+    return jsonify({
+        'summary': summary,
+        'total_reviews': len(reviews),
+        'average_rating': sum(r[0] for r in reviews) / len(reviews)
+    })
 
 if __name__ == '__main__':
     app.run(debug=True)

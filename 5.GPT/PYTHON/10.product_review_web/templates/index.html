@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>상품 후기 작성</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+  </head>
+  <body>
+    <div class="flex justify-end p-4">
+      <select id="languageSelector" class="p-2 border rounded-md">
+        <option value="ko">한국어</option>
+        <option value="en">English</option>
+        <option value="ja">日本語</option>
+        <option value="fr">Français</option>
+        <option value="it">Italiano</option>
+      </select>
+    </div>
+
+    <h1>상품 후기 작성</h1>
+    <div class="review-form">
+      <img
+        src="https://picsum.photos/400/300"
+        alt="Random Product Image"
+        class="product-image"
+      />
+      <form id="reviewForm">
+        <div class="form-group">
+          <label>평점</label>
+          <div class="rating">
+            <label
+              ><input type="radio" name="rating" value="5" />★★★★★ 매우
+              좋음</label
+            >
+            <label
+              ><input type="radio" name="rating" value="4" />★★★★ 좋음</label
+            >
+            <label
+              ><input type="radio" name="rating" value="3" />★★★ 보통</label
+            >
+            <label><input type="radio" name="rating" value="2" />★★ 나쁨</label>
+            <label
+              ><input type="radio" name="rating" value="1" />★ 매우 나쁨</label
+            >
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="review-text">후기 내용</label>
+          <textarea id="review-text" rows="5" required></textarea>
+        </div>
+        <button
+          type="submit"
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out"
+        >
+          후기 등록
+        </button>
+      </form>
+    </div>
+
+    <div class="ai-review-summary">
+      <h2>AI 후기 요약</h2>
+      <div id="aiSummary" class="p-4 bg-gray-100 rounded-lg mt-4">
+        <div class="loading-spinner hidden">Loading...</div>
+        <div class="summary-content"></div>
+      </div>
+    </div>
+
+    <div class="review-list">
+      <h2>작성된 후기</h2>
+      <div id="reviewsList"></div>
+    </div>
+
+    <script>
+      document
+        .getElementById("languageSelector")
+        .addEventListener("change", function () {
+          const selectedLanguage = this.value;
+          updateAISummary(selectedLanguage);
+        });
+
+      function updateAISummary(language) {
+        const summaryContent = document.querySelector(".summary-content");
+        const loadingSpinner = document.querySelector(".loading-spinner");
+
+        loadingSpinner.classList.remove("hidden");
+        summaryContent.innerHTML = "";
+
+        // API call to update summary based on selected language
+        // Replace with actual API endpoint
+        fetch(`/api/summary?lang=${language}`)
+          .then((response) => response.json())
+          .then((data) => {
+            loadingSpinner.classList.add("hidden");
+            summaryContent.innerHTML = data.summary;
+          })
+          .catch((error) => {
+            loadingSpinner.classList.add("hidden");
+            summaryContent.innerHTML = "Error loading summary";
+          });
+      }
+    </script>
+  </body>
+</html>
