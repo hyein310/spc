@@ -1,9 +1,8 @@
 const express = require("express");
 const morgan = require("morgan");
 const path = require("path");
-const cors = require("cors");
 const todoRoutes = require("./routes/todoRoute");
-const chatbot = require("./routes/chatbotRoute");
+const chatbot = require("./routes/chatbot_to_python");
 
 const app = express();
 const port = 3000;
@@ -12,7 +11,6 @@ const port = 3000;
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(express.static(path.join(__dirname, "public")));
-app.use(cors());
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
